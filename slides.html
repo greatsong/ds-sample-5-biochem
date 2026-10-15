@@ -101,6 +101,11 @@
   table.mini.cmp { font-size: clamp(14px, 1.6vw, 23px); width: 100%; }
   table.mini.cmp th, table.mini.cmp td { padding: 1.2vh .9vw; }
   table.mini.cmp td { white-space: nowrap; }
+  .steps { margin-top: 3vh; display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
+  .steps ol { list-style: none; }
+  .steps li { font-size: clamp(15px, 1.75vw, 25px); margin: 1.8vh 0; display: flex; align-items: baseline; gap: .6em; }
+  .steps .n { flex: 0 0 1.8em; text-align: center; color: var(--bg); background: var(--accent); border-radius: 999px; font-weight: 800; font-size: .8em; }
+  .steps b { color: var(--accent2); font-weight: 800; white-space: nowrap; margin-right: .3em; }
 </style>
 </head>
 <body>
@@ -144,13 +149,22 @@
 <section class="slide">
   <div class="kicker">4 / 17 · 어떤 과정으로 분석했는지</div>
   <h2>어떤 과정으로 분석했는지</h2>
-  <ul class="facts">
-    <li>데이터 판정, 선생님 승인 (3차시)</li>
-    <li>분포 확인, sex 부호와 ltg 로그값 확인 (4~6차시)</li>
-    <li>평균 모델 기준선, bmi 하나 모델 (7~8차시)</li>
-    <li>변수 묶음 비교, 후보 모델 다섯 비교 (10~11차시)</li>
-    <li>AI 반론 3가지, 잔차 확인 (12차시)</li>
-  </ul>
+  <div class="steps">
+    <ol>
+      <li><span class="n">1</span><b>수집</b> Efron 외(2004) · 442명 · 11열</li>
+      <li><span class="n">2</span><b>변수 선택</b> 정답 진행 점수 · 입력 bmi + ltg</li>
+      <li><span class="n">3</span><b>전처리</b> 결측 0 · 250 이상 65명 유지</li>
+      <li><span class="n">4</span><b>분할</b> 훈련 353 · 시험 89 · 난수 42</li>
+      <li><span class="n">5</span><b>기준선</b> 평균 모델 MAE 64.0점</li>
+    </ol>
+    <ol>
+      <li><span class="n">6</span><b>후보 비교</b> 5종 · 같은 입력 · 같은 분할</li>
+      <li><span class="n">7</span><b>선택</b> MAE 차이 0.07점 · 계수 해석</li>
+      <li><span class="n">8</span><b>평가</b> MAE · R² · 훈련과 시험 차이</li>
+      <li><span class="n">9</span><b>해석</b> 상관계수 · 상하위 25% · 구간별 잔차</li>
+      <li><span class="n">10</span><b>한계 점검</b> 교차검증 없음 · 한 연구 집단</li>
+    </ol>
+  </div>
 </section>
 
 <!-- 5 고려한 모델 -->
@@ -202,7 +216,7 @@
   <ul class="facts">
     <li>진행 점수 250 이상 <b>65명</b>도 실제 환자라 유지</li>
     <li>sex 부호에 뜻 붙이지 않음, ltg는 로그값 그대로</li>
-    <li>훈련 353명 · 시험 89명 분할 고정</li>
+    <li>계수 크기로 중요도 순위 매기지 않음: 변수마다 단위가 다름</li>
     <li>R²: bmi 하나 <b>0.233</b> → bmi + ltg <b>0.452</b> → 열 개 <b>0.453</b></li>
     <li>최종 변수: 체질량지수 + 중성지방 로그값</li>
   </ul>
