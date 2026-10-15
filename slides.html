@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>검진표연구소 발표 · 당뇨 진행 예측</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0f1219; --bg-accent: #161b26;
+    --ink: #f2f4f8; --ink-dim: #8b93a7;
+    --accent: #ffd166; --accent2: #7cc7ff; --quote: #e8ecf4;
+  }
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--ink);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif; overflow: hidden; }
+  .slide { position: absolute; inset: 0; display: none; flex-direction: column;
+    justify-content: center; padding: 6vh 9vw; line-height: 1.55; }
+  .slide.on { display: flex; }
+  .kicker { font-size: clamp(15px, 1.6vw, 22px); letter-spacing: .14em;
+    color: var(--accent); font-weight: 700; margin-bottom: 2.2vh; }
+  .kicker.blue { color: var(--accent2); }
+  h1 { font-size: clamp(34px, 4.6vw, 64px); font-weight: 800; line-height: 1.25; }
+  h2 { font-size: clamp(26px, 3.4vw, 48px); font-weight: 800; line-height: 1.35; }
+  .sub { margin-top: 3vh; font-size: clamp(17px, 1.9vw, 26px); color: var(--ink-dim); }
+  blockquote { font-size: clamp(21px, 2.6vw, 38px); font-weight: 700; color: var(--quote);
+    line-height: 1.5; max-width: 28em; }
+  blockquote::before { content: "\201C"; color: var(--accent); }
+  blockquote::after { content: "\201D"; color: var(--accent); }
+  .facts { margin-top: 1vh; }
+  .facts li { list-style: none; font-size: clamp(19px, 2.3vw, 33px); margin: 2.4vh 0;
+    padding-left: 1.2em; text-indent: -1.2em; }
+  .facts li::before { content: "\00B7  "; color: var(--accent2); font-weight: 800; }
+  .facts b { color: var(--accent2); font-weight: 800; }
+  .point { margin-top: 3.4vh; font-size: clamp(20px, 2.5vw, 36px); font-weight: 700; }
+  .point b { color: var(--accent); }
+  .small { margin-top: 2.6vh; font-size: clamp(15px, 1.6vw, 22px); color: var(--ink-dim); }
+  .prompt { margin-top: 3vh; background: #101d1a; border: 1px solid #24463d; border-radius: 14px;
+    padding: 2.6vh 2vw; font-family: "SFMono-Regular", "D2Coding", Menlo, monospace;
+    font-size: clamp(14px, 1.55vw, 22px); line-height: 1.7; color: #d7f0ea; max-width: 40em; overflow-wrap: break-word; }
+  table.mini { margin-top: 3vh; border-collapse: collapse; font-size: clamp(16px, 1.9vw, 27px); }
+  table.mini th, table.mini td { padding: 1.2vh 1.4vw; border-bottom: 1px solid #2a3244; text-align: left; }
+  table.mini th { color: var(--accent); font-weight: 800; }
+  table.mini td:first-child { font-weight: 800; white-space: nowrap; }
+  table.mini td em { color: var(--accent2); font-style: normal; font-weight: 800; }
+  .split { margin-top: 3.4vh; display: flex; gap: 3vw; flex-wrap: wrap; }
+  .card { border: 1.5px solid #2a3244; border-radius: 16px; padding: 2.4vh 2vw; min-width: 15em; }
+  .card .t { color: var(--accent); font-weight: 800; font-size: clamp(16px, 1.8vw, 24px); }
+  .card .v { margin-top: 1.2vh; font-size: clamp(30px, 4vw, 58px); font-weight: 800; }
+  .card .d { margin-top: 1vh; color: var(--ink-dim); font-size: clamp(14px, 1.5vw, 20px); }
+  .withimg { display: flex; gap: 3vw; align-items: center; margin-top: 2vh; }
+  .withimg .txt { flex: 1 1 0; min-width: 0; }
+  .withimg img { max-height: 58vh; max-width: 32vw; border-radius: 14px; border: 1px solid #2a3244; object-fit: cover; }
+  .shot.tall img { max-height: 64vh; width: auto; margin: 0 auto; display: block; }
+  .shot.wide img { max-height: 46vh; width: auto; max-width: 100%; margin: 0 auto; display: block; }
+  .src { margin-top: 1.4vh; font-size: clamp(12px, 1.2vw, 16px); color: var(--ink-dim); }
+  .diagram { margin-top: 3vh; background: #f7f3e8; border-radius: 16px; padding: 2vh 1.4vw; overflow-x: auto; }
+  .diagram.short svg { max-height: var(--dh, 40vh); }
+  /* 인터랙티브 위젯, 밝은 상자 안 */
+  .widget { color: #1c2230; }
+  .diagram .widget svg { width: auto; max-width: 100%; max-height: var(--wh, 44vh); height: auto; display: block; margin: 0 auto; }
+  .wctl { display: flex; flex-wrap: wrap; align-items: center; gap: .8vh 1.4vw; margin-top: 1.2vh;
+          font-size: clamp(14px, 1.5vw, 20px); font-weight: 700; }
+  .wctl label { display: flex; align-items: center; gap: .6vw; white-space: nowrap; }
+  .wctl input[type=range] { width: clamp(120px, 16vw, 260px); accent-color: #2b7fd6; }
+  .wbtn { border: 1.5px solid #c9c2b2; background: #fff; color: #1c2230; border-radius: 999px;
+          padding: .5vh 1.2vw; font: inherit; font-weight: 700; cursor: pointer; }
+  .wbtn.on { background: #2b7fd6; border-color: #2b7fd6; color: #fff; }
+  .wout { margin-left: auto; color: #b07a00; font-variant-numeric: tabular-nums; }
+  .diagram svg { width: auto; max-width: 100%; max-height: 50vh; height: auto; display: block; margin: 0 auto; }
+  .chapter { background: radial-gradient(ellipse at 20% 110%, #1c2434 0%, var(--bg) 60%); }
+  .foot span { white-space: nowrap; }
+  .foot { position: absolute; bottom: 3.4vh; left: 9vw; right: 9vw;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--ink-dim); font-size: clamp(12px, 1.2vw, 16px); }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: #333c4e; }
+  .dots i.here { background: var(--accent); }
+  .hint { position: absolute; top: 3.2vh; right: 4vw; color: var(--ink-dim);
+    font-size: clamp(11px, 1.1vw, 14px); }
+@media (max-width: 760px) { .dots { display: none; } }
+</style>
+<style>
+  .bars { margin-top: 3.4vh; display: flex; flex-direction: column; gap: 2.2vh; max-width: 62em; }
+  .bar { display: grid; grid-template-columns: 15em 1fr 6em; align-items: center; gap: 1.2vw;
+    font-size: clamp(15px, 1.8vw, 25px); }
+  .bar .lab { font-weight: 700; white-space: nowrap; }
+  .bar .track { background: #1b2130; border-radius: 8px; height: 4.6vh; overflow: hidden; }
+  .bar .track i { display: block; height: 100%; background: var(--accent2); border-radius: 8px; }
+  .bar .track i.gray { background: #59627a; }
+  .bar .track i.hi { background: var(--accent); }
+  .bar .num { font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+  .qbank { margin-top: 3.4vh; padding-left: 1.4em; color: var(--ink-dim); font-size: clamp(13px, 1.35vw, 18px); line-height: 1.8; }
+</style>
+<style>
+  .withimg .plot { margin-top: 0; flex: 0 0 auto; padding: 1.4vh 1vw; }
+  .chart { width: 38vw; height: 46vh; }
+  .nw { white-space: nowrap; }
+  .small-facts li { font-size: clamp(17px, 2vw, 28px); }
+</style>
+</head>
+<body>
+
+<!-- 1 제목 -->
+<section class="slide chapter">
+  <div class="kicker">1 / 12 · 제목</div>
+  <h1>혈액 생화학 수치와 체질량지수로<br>1년 뒤 당뇨 진행 정도를 예측할 수 있는가</h1>
+  <p class="sub">검진표연구소 · 10101 홍길동 · 10102 김영희 · 10103 이철수</p>
+  <p class="small">선생님이 만든 가상 팀의 샘플 · 데이터와 수치는 실제 계산값</p>
+</section>
+
+<!-- 2 데이터셋 -->
+<section class="slide">
+  <div class="kicker">2 / 12 · 우리 팀의 데이터셋</div>
+  <h2>우리 팀의 데이터셋</h2>
+  <div class="withimg">
+    <ul class="facts txt small-facts">
+      <li>당뇨 환자의 기준 시점 측정값 (Efron 외, 2004)</li>
+      <li><b>442명 · 11개 열</b>, 결측값 <b>0개</b></li>
+      <li>입력: 체질량지수 · 혈압 · 혈액 검사 6개 등 10개</li>
+      <li>예측할 값: 1년 뒤 진행 점수 <b>25~346</b></li>
+    </ul>
+    <div class="diagram plot"><div class="chart" id="g2"></div></div>
+  </div>
+</section>
+
+<!-- 3 선택 이유 -->
+<section class="slide">
+  <div class="kicker">3 / 12 · 이 문제를 선택한 이유</div>
+  <h2>이 문제를 선택한 이유</h2>
+  <ul class="facts">
+    <li>생명과학 시간의 혈당 · 인슐린 · 지질 대사</li>
+    <li>검진표의 많은 숫자, 몇 개만 봐도 될까</li>
+    <li>진행 점수와의 상관계수: 혈당 <b>0.38</b>, 체질량지수 <b>0.59</b>, 중성지방 <b>0.57</b></li>
+    <li>"걸린다 · 안 걸린다"가 아닌 진행 정도를 숫자로</li>
+  </ul>
+</section>
+
+<!-- 4 과정 -->
+<section class="slide">
+  <div class="kicker">4 / 12 · 어떤 과정으로 분석했는지</div>
+  <h2>어떤 과정으로 분석했는지</h2>
+  <ul class="facts">
+    <li>데이터 판정, 선생님 승인 (3차시)</li>
+    <li>분포 확인, sex 부호와 ltg 로그값 확인 (4~6차시)</li>
+    <li>평균 모델 기준선, bmi 하나 모델 (7~8차시)</li>
+    <li>변수 묶음 비교, 후보 모델 다섯 비교 (10~11차시)</li>
+    <li>AI 반론 3가지, 잔차 확인 (12차시)</li>
+  </ul>
+</section>
+
+<!-- 5 고려한 모델 -->
+<section class="slide">
+  <div class="kicker">5 / 12 · 어떤 모델을 고려했는지</div>
+  <h2>어떤 모델을 고려했는지</h2>
+  <table class="mini">
+    <tr><th>모델</th><th>시험 MAE</th><th>시험 R²</th><th>훈련 MAE</th></tr>
+    <tr><td>평균 모델(기준선)</td><td>64.0점</td><td>-0.012</td><td>66.4점</td></tr>
+    <tr><td>선형 회귀</td><td><em>44.0점</em></td><td><em>0.452</em></td><td>47.5점</td></tr>
+    <tr><td>k-NN 회귀(k=5)</td><td>44.7점</td><td>0.379</td><td>40.4점</td></tr>
+    <tr><td>결정 트리 회귀(깊이 4)</td><td>44.9점</td><td>0.436</td><td>42.1점</td></tr>
+    <tr><td>랜덤 포레스트 회귀(300그루)</td><td>43.9점</td><td>0.420</td><td>19.3점</td></tr>
+    <tr><td>XGBoost 회귀(기본값)</td><td>50.7점</td><td>0.196</td><td>4.4점</td></tr>
+  </table>
+  <p class="small">입력: 체질량지수 + 중성지방 로그값 · 같은 분할(훈련 353명 · 시험 89명)</p>
+</section>
+
+<!-- 6 선택 이유 -->
+<section class="slide">
+  <div class="kicker">6 / 12 · 왜 이 모델을 선택했는지</div>
+  <h2>왜 이 모델을 선택했는지</h2>
+  <ul class="facts">
+    <li>선형 회귀: R² <b>0.452</b>, 다섯 모델 중 최고</li>
+    <li>MAE 최소는 랜덤 포레스트 <b>43.9점</b>, 차이 <b>0.07점</b></li>
+    <li>계수로 읽는 영향: bmi 1당 <b>7.9점</b> · ltg 1당 <b>51.3점</b></li>
+    <li>수업에서 배운 모델, 발표에서 설명 가능</li>
+    <li>XGBoost: 훈련 <b>4.4점</b> · 시험 <b>50.7점</b>, 훈련 데이터 암기</li>
+  </ul>
+</section>
+
+<!-- 7 평가지표 -->
+<section class="slide">
+  <div class="kicker">7 / 12 · 우리가 사용한 평가지표</div>
+  <h2>우리가 사용한 평가지표</h2>
+  <ul class="facts">
+    <li>MAE: 예측 점수가 실제 점수에서 평균 몇 점 빗나가나</li>
+    <li>R²: 평균 모델보다 오차를 얼마나 줄였나 (1에 가까울수록 좋음)</li>
+    <li>우리 모델: MAE <b>44.0점</b>, R² <b>0.452</b></li>
+    <li>기준선(평균 모델): MAE <b>64.0점</b>, R² <b>-0.012</b></li>
+    <li>MAE를 중심으로: 진행 점수 단위 그대로라 설명이 쉬움</li>
+  </ul>
+</section>
+
+<!-- 8 결정 -->
+<section class="slide">
+  <div class="kicker">8 / 12 · 모델링 과정에서 우리 팀이 결정한 것</div>
+  <h2>모델링 과정에서 우리 팀이 결정한 것</h2>
+  <ul class="facts">
+    <li>진행 점수 250 이상 <b>65명</b>도 실제 환자라 유지</li>
+    <li>sex 부호에 뜻 붙이지 않음, ltg는 로그값 그대로</li>
+    <li>훈련 353명 · 시험 89명 분할 고정</li>
+    <li>R²: bmi 하나 <b>0.233</b> → bmi + ltg <b>0.452</b> → 열 개 <b>0.453</b></li>
+    <li>최종 변수: 체질량지수 + 중성지방 로그값</li>
+  </ul>
+</section>
+
+<!-- 9 해석 -->
+<section class="slide">
+  <div class="kicker">9 / 12 · 최종 분석 결과에 대한 우리 팀의 해석</div>
+  <h2>최종 분석 결과에 대한 우리 팀의 해석</h2>
+  <div class="withimg">
+    <div class="diagram plot"><div class="chart" id="g9"></div></div>
+    <ul class="facts txt small-facts">
+      <li>두 변수 R² <b>0.452</b>, 열 개 <b>0.453</b></li>
+      <li>MAE: 기준선보다 <b>31%</b> 감소</li>
+      <li>진행 점수 차이의 절반 미만만 설명</li>
+      <li>결론: 설명력은 대부분 체질량지수와 중성지방</li>
+    </ul>
+  </div>
+  <p class="small">약점: 실제 250 이상 환자 10명 모두 낮게 예측, 평균 72.4점 낮음 (열 개 모델)</p>
+</section>
+
+<!-- 10 추가 연구 -->
+<section class="slide">
+  <div class="kicker">10 / 12 · 이후 추가로 연구한다면</div>
+  <h2>이후 추가로 연구한다면 더 해 보고 싶은 것</h2>
+  <table class="mini">
+    <tr><th>구분</th><th>키워드</th></tr>
+    <tr><td>더 해 볼 분석</td><td>생활 습관 열 추가, 여러 번 나눈 평가, 진행이 많이 된 환자 예측</td></tr>
+    <tr><td>교과 연계</td><td>생명과학: 혈당 조절 · 지질 대사 · 화학: 지질과 콜레스테롤 구조 · 체육: 체질량지수와 건강 체력</td></tr>
+    <tr><td>진로 분야</td><td>임상병리사 · 의학 연구원 · 보건 데이터 분석가</td></tr>
+  </table>
+</section>
+
+<!-- 11 느낀 점 -->
+<section class="slide">
+  <div class="kicker">11 / 12 · 느끼고 배운 점</div>
+  <h2>AI를 활용하고 데이터를 분석하며 느끼고 배운 점</h2>
+  <ul class="facts small-facts">
+    <li>홍길동: "이름이 유명한 모델이 우리 데이터에서도 가장 좋은 건 아니었다."</li>
+    <li>김영희: "AI가 하는 일반적인 말보다 우리 데이터에서 나온 숫자를 믿어야 한다."</li>
+    <li>이철수: "'관계없다'와 '더 보태는 게 작다'는 완전히 다른 주장이었다."</li>
+  </ul>
+  <p class="point">AI 활용에서 배운 것: <b>계수 크기는 단위부터 확인</b> · <b>비교는 같은 분할에서</b></p>
+</section>
+
+<!-- 12 마무리 -->
+<section class="slide chapter">
+  <div class="kicker">12 / 12 · 마무리</div>
+  <h1>감사합니다</h1>
+  <p class="sub">질문 받겠습니다</p>
+  <p class="small">검진표연구소 · 홍길동 · 김영희 · 이철수</p>
+</section>
+
+<div class="hint">← → 이동 · Home 처음으로</div>
+<div class="foot">
+  <span>검진표연구소 · 데이터 과학 팀 프로젝트</span>
+  <div class="dots" id="dots"></div>
+  <span id="pageno"></span>
+</div>
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const dots = document.getElementById('dots');
+  slides.forEach(() => dots.appendChild(document.createElement('i')));
+  let cur = 0;
+
+  // 그래프: plotly, 데이터는 data/diabetes.csv와 code/check.py 출력에서 뽑은 값
+  const PROG = [151,75,141,206,135,97,138,63,110,310,101,69,179,185,118,171,166,144,97,168,68,49,68,245,184,202,137,85,131,283,129,59,341,87,65,102,265,276,252,90,100,55,61,92,259,53,190,142,75,142,155,225,59,104,182,128,52,37,170,170,61,144,52,128,71,163,150,97,160,178,48,270,202,111,85,42,170,200,252,113,143,51,52,210,65,141,55,134,42,111,98,164,48,96,90,162,150,279,92,83,128,102,302,198,95,53,134,144,232,81,104,59,246,297,258,229,275,281,179,200,200,173,180,84,121,161,99,109,115,268,274,158,107,83,103,272,85,280,336,281,118,317,235,60,174,259,178,128,96,126,288,88,292,71,197,186,25,84,96,195,53,217,172,131,214,59,70,220,268,152,47,74,295,101,151,127,237,225,81,151,107,64,138,185,265,101,137,143,141,79,292,178,91,116,86,122,72,129,142,90,158,39,196,222,277,99,196,202,155,77,191,70,73,49,65,263,248,296,214,185,78,93,252,150,77,208,77,108,160,53,220,154,259,90,246,124,67,72,257,262,275,177,71,47,187,125,78,51,258,215,303,243,91,150,310,153,346,63,89,50,39,103,308,116,145,74,45,115,264,87,202,127,182,241,66,94,283,64,102,200,265,94,230,181,156,233,60,219,80,68,332,248,84,200,55,85,89,31,129,83,275,65,198,236,253,124,44,172,114,142,109,180,144,163,147,97,220,190,109,191,122,230,242,248,249,192,131,237,78,135,244,199,270,164,72,96,306,91,214,95,216,263,178,113,200,139,139,88,148,88,243,71,77,109,272,60,54,221,90,311,281,182,321,58,262,206,233,242,123,167,63,197,71,168,140,217,121,235,245,40,52,104,132,88,69,219,72,201,110,51,277,63,118,69,273,258,43,198,242,232,175,93,168,275,293,281,72,140,189,181,209,136,261,113,131,174,257,55,84,42,146,212,233,91,111,152,120,67,310,94,183,66,173,72,49,64,48,178,104,132,220,57];  // 1년 뒤 진행 점수, 442명
+  const drawn = {};
+  const pfont = { family: '"Apple SD Gothic Neo", "Noto Sans KR", sans-serif', size: 15, color: '#1c2230' };
+  function base(xt, yt) {
+    return { autosize: true, margin: { l: 70, r: 20, t: 36, b: 60 }, paper_bgcolor: '#f7f3e8', plot_bgcolor: '#f7f3e8',
+      font: pfont, xaxis: { title: { text: xt }, tickformat: ',d', gridcolor: '#ddd6c6' },
+      yaxis: { title: { text: yt }, gridcolor: '#ddd6c6' } };
+  }
+  function draw(id) {
+    if (drawn[id] || !window.Plotly) return;
+    drawn[id] = true;
+    if (id === 'g2') {
+      const lay = base('1년 뒤 진행 점수', '환자 수(명)');
+      lay.title = { text: '진행 점수 분포 (442명)', font: { size: 17 } };
+      lay.bargap = 0.05;
+      Plotly.newPlot('g2', [{ type: 'histogram', x: PROG, xbins: { start: 20, end: 350, size: 15 },
+        marker: { color: '#2b7fd6' } }], lay, { staticPlot: true, responsive: true });
+    }
+    if (id === 'g9') {
+      const lay = base('시험 데이터 R²', '');
+      lay.title = { text: '변수 묶음별 R² (선형 회귀)', font: { size: 17 } };
+      lay.margin.l = 120; lay.margin.r = 70;
+      lay.xaxis.range = [-0.05, 0.6]; lay.xaxis.tickformat = '.1f';
+      lay.yaxis = { autorange: 'reversed' };
+      const r2 = [-0.012, 0.233, 0.452, 0.453];
+      Plotly.newPlot('g9', [{ type: 'bar', orientation: 'h', y: ['평균 모델', 'bmi 하나', 'bmi + ltg', '열 개 전부'], x: r2,
+        text: r2.map(v => v.toFixed(3)), textposition: 'outside', cliponaxis: false,
+        marker: { color: ['#9aa0ad', '#9aa0ad', '#2b7fd6', '#9aa0ad'] } }], lay, { staticPlot: true, responsive: true });
+    }
+  }
+  function show(i) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, k) => s.classList.toggle('on', k === cur));
+    [...dots.children].forEach((d, k) => d.classList.toggle('here', k === cur));
+    document.getElementById('pageno').textContent = (cur + 1) + ' / ' + slides.length;
+    slides[cur].querySelectorAll('.chart').forEach(c => draw(c.id));
+  }
+  addEventListener('keydown', e => {
+    if (e.target.matches('input, select, textarea, button')) return;   // 위젯 조작 중에는 넘기지 않음
+    if (['ArrowRight', ' ', 'PageDown'].includes(e.key)) show(cur + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) show(cur - 1);
+    if (e.key === 'Home') show(0);
+  });
+  addEventListener('click', e => { if (e.target.closest('a, .widget')) return; show(cur + (e.clientX > innerWidth / 2 ? 1 : -1)); });
+  show(0);
+</script>
+</body>
+</html>
