@@ -1,5 +1,6 @@
-"""포스터(poster.html)에 넣을 그래프 3개와 QR 코드 2개를 SVG로 만들어 끼워 넣는 스크립트.
+"""v4 포스터(poster.html)에 넣을 그래프 3개를 SVG로 만들어 끼워 넣는 스크립트.
 
+2단 균등(단 폭 260mm, poster.html과 같음)에 맞춰 그래프 폭과 높이를 정한다. QR 2개도 함께 다시 만든다.
 저장소 맨 위 폴더에서 실행한다: python3 code/poster_figs.py
 check.py와 같은 전처리·분할·모델을 사용하므로 그래프의 값은 check.py 수치와 같다.
 포스터를 만들 때만 사용하는 도구라 matplotlib·segno·xgboost가 필요하다(앱 실행에는 필요 없음).
@@ -39,6 +40,8 @@ GRAY = "#9aa0aa"        # 선택하지 않은 모델·나머지 점
 DARK = "#4a4f57"        # 기준선
 # 단 폭(인치) = (594mm - 좌우 여백 2×26mm - 단 사이 22mm) / 2 = 260mm. poster.html의 --pad-x·--gap을 바꾸면 다시 계산한다
 COL_W = 260 / 25.4
+# v4 그래프 높이(인치): 단 폭은 같고 높이만 정한다
+HIST_H, BARS_H, RESULT_H = 2.1, 3.9, 3.95
 
 plt.rcParams.update({
     "svg.fonttype": "none",          # 글자를 글자로 남겨 브라우저 글꼴로 그린다
@@ -83,9 +86,9 @@ def inject(figs):
     POSTER.write_text(html, encoding="utf-8")
 
 
-def bar_chart(names, values, pick, base, fmt, xlabel, height=4.6):
+def bar_chart(names, values, pick, base, fmt, xlabel, height=4.6, width=COL_W):
     """평가지표 비교 가로 막대. pick=선택 모델 이름, base=기준선 이름."""
-    fig, ax = plt.subplots(figsize=(COL_W, height))
+    fig, ax = plt.subplots(figsize=(width, height))
     y = np.arange(len(names))[::-1]
     colors = [ACCENT if n == pick else DARK if n == base else GRAY for n in names]
     ax.barh(y, values, color=colors, height=0.66)
@@ -130,13 +133,13 @@ y = test["progression"]
 X = ["bmi", "ltg"]
 
 # 그래프 1(FIG:hist): 진행 점수 분포(442명)
-fig, ax = plt.subplots(figsize=(COL_W, 2.0))
+fig, ax = plt.subplots(figsize=(COL_W, HIST_H))
 ax.hist(prog, bins=np.arange(20, 361, 20), color=ACCENT, edgecolor="#fff", linewidth=0.6)
 top = ax.get_ylim()[1]
-for val, lab, dy in [(prog.median(), f"중앙값 {prog.median():.1f}점", 0.55), (prog.mean(), f"평균 {prog.mean():.1f}점", 0.85)]:
+for val, lab, dy in [(prog.median(), f"중앙값 {prog.median():.1f}점", 0.66), (prog.mean(), f"평균 {prog.mean():.1f}점", 0.94)]:
     ax.axvline(val, color="#000", linestyle=(0, (4, 3)), linewidth=1.4)
     # 두 선이 가까워 글자는 오른쪽에 두고 가는 선으로 잇는다
-    ax.annotate(lab, xy=(val, top * dy), xytext=(250, top * dy), va="center", fontsize=20,
+    ax.annotate(lab, xy=(val, top * dy), xytext=(262, top * dy), va="center", fontsize=20,
                 arrowprops=dict(arrowstyle="-", color="#000", linewidth=1.0, shrinkA=4, shrinkB=0))
 ax.set_xlabel("1년 뒤 진행 점수(점)")
 ax.set_ylabel("환자 수(명)", labelpad=14)
@@ -160,31 +163,28 @@ for name, m in models:
     rows.append((name, mean_absolute_error(y, m.predict(test[X])),
                  mean_absolute_error(train["progression"], m.predict(train[X]))))
 PICK, BASE = "선형 회귀(선택)", "평균 모델(기준선)"
-fig, ax = plt.subplots(figsize=(COL_W, 5.1))
+fig, ax = plt.subplots(figsize=(COL_W, BARS_H))
 pos = np.arange(len(rows))[::-1] * 1.0
 h = 0.42
 for yi, (name, te_mae, tr_mae) in zip(pos, rows):
     c = ACCENT if name == PICK else DARK if name == BASE else GRAY
     ax.barh(yi + h / 2, te_mae, height=h, color=c)
     ax.barh(yi - h / 2, tr_mae, height=h, color=LIGHT[c])
-    bold = "bold" if name == PICK else "normal"
-    ax.text(te_mae + 0.8, yi + h / 2, f"{te_mae:.1f}", va="center", fontsize=20,
-            color=ACCENT if name == PICK else "#000", fontweight=bold)
-    ax.text(tr_mae + 0.8, yi - h / 2, f"{tr_mae:.1f}", va="center", fontsize=20, color="#555")
+    # 시험·훈련 값을 막대 끝에 한 줄로 적는다(두 값이 가까워 따로 적으면 글자가 겹친다)
+    ax.text(max(te_mae, tr_mae) + 1.2, yi, f"시험 {te_mae:.1f} · 훈련 {tr_mae:.1f}", va="center", fontsize=20,
+            color=ACCENT if name == PICK else "#000", fontweight="bold" if name == PICK else "normal")
 ax.set_yticks(pos)
 ax.set_yticklabels([r[0] for r in rows])
 for t, r in zip(ax.get_yticklabels(), rows):
     if r[0] == PICK:
         t.set_color(ACCENT)
         t.set_fontweight("bold")
-ax.set_xlim(0, 100)
-ax.set_xticks([0, 20, 40, 60, 80])
+ax.set_xlim(0, 112)
+ax.set_xticks([0, 20, 40, 60, 80, 100])
 ax.set_xlabel("MAE(점, 작을수록 좋음)")
 ax.spines["left"].set_visible(False)
 ax.tick_params(axis="y", length=0)
-from matplotlib.patches import Patch
-ax.legend(handles=[Patch(color=GRAY, label="시험 데이터 89명"), Patch(color=LIGHT[GRAY], label="훈련 데이터 353명")],
-          loc="center right", frameon=False, fontsize=20, handlelength=1.2, borderaxespad=0.1)
+# 진한 막대가 시험, 옅은 막대가 훈련이라는 설명은 포스터의 그림 3 캡션에 적는다
 svg_bars = svg_of(fig)
 
 # 그래프 3(FIG:result): 시험 데이터 89명의 실제 진행 점수와 최종 모델(선형 회귀, bmi + ltg) 예측
@@ -192,7 +192,7 @@ mc = LinearRegression().fit(train[X], train["progression"])
 pred = mc.predict(test[X])
 real = y.to_numpy()
 high = real >= 250
-fig, ax = plt.subplots(figsize=(COL_W, 4.0))
+fig, ax = plt.subplots(figsize=(COL_W, RESULT_H))
 lo, hi = 0, 360
 ax.plot([lo, hi], [lo, hi], color="#000", linewidth=1.4, linestyle=(0, (4, 3)))
 ax.scatter(real[~high], pred[~high], s=70, color=GRAY, edgecolor="none", label=f"실제 250점 미만 {(~high).sum()}명")

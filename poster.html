@@ -5,21 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>검진표연구소 포스터</title>
 <!--
-  A1 세로 포스터(594×841mm), 2단 연구 포스터 양식.
-  화면에서는 창 폭에 맞춰 줄여 보이고, 인쇄·PDF에서는 원 크기.
-
-  [양식과 내용의 분리]
-  · 공통 양식(바꾸지 않는다): <style> 전체, 제목띠·2단·구역·발치의 틀, 맨 아래 <script>.
-  · 내용(샘플마다 바꾼다): "내용 시작"과 "내용 끝" 주석 사이의 글과 표.
-  · 그래프 3개와 QR 2개는 code/poster_figs.py가 FIG 표시 사이에 SVG로 넣는다(손으로 고치지 않는다).
-  · 구역 번호와 이름(1. 서론 ~ 6. 한계와 향후 연구)은 다섯 샘플이 같다.
-
-  [쓸 수 있는 내용 부품]
-  p.q 연구 질문 · ul 글머리표(·) · p.flow 분석 흐름 · table.t 표(tr.pick = 선택 모델 행)
-  table.models 모델 소개 표(열 6개) · div.fig 그래프 · p.cap 그래프·표 설명 · div.nums 핵심 수치 3개
-  p.final 결론 한 문장 · span.lb 줄 앞의 짧은 머리말 · b 강조 숫자
+  A1 세로 포스터(594×841mm) v4. 다섯 샘플과 글꼴·색·여백·단 폭(2단 균등, 260mm씩)이 같다.
+  · 데이터 과학 포스터 세션의 표준 구역: 요약 / 1. 서론 / 2. 데이터 / 3. 방법 / 4. 결과 / 5. 논의 / 6. 결론과 한계 / 참고문헌(발치)
+  · 제목띠 아래 요약 상자(초록 형식, 전체 폭, 옅은 바탕): 연구 질문 · 데이터와 방법 · 핵심 결과 · 결론
+  · 그림·표에는 번호와 캡션(그림 1~3, 표 1). 캡션 안에 그래프가 말하는 것 한 문장
+  · 방법의 분석 과정은 파이프라인 6칸 한 줄(선택 칸만 강조 색)
+  · 그래프 3개와 QR 2개는 code/poster_figs.py가 단 폭(260mm)에 맞춰 그려 FIG 표시 사이에 넣는다.
 -->
 <style>
+
   /* ════════════ 공통 양식: 다섯 샘플이 같다 ════════════ */
   :root {
     --accent: #1f3d7a;          /* 남색 한 가지 */
@@ -61,7 +55,7 @@
   /* 2단 */
   .body { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap);
     padding: 13mm var(--pad-x) 0; min-height: 0; }
-  .col { display: flex; flex-direction: column; justify-content: space-between; gap: 12mm; min-height: 0; overflow: hidden; }
+  .col { display: flex; flex-direction: column; justify-content: space-between; gap: 10mm; min-height: 0; overflow: hidden; }
 
   /* 구역 */
   .sec { font-size: var(--fs-body); line-height: 1.42; }
@@ -76,8 +70,9 @@
   .sec b { color: var(--accent); font-weight: 800; }
   .lb { font-weight: 800; margin-right: .3em; }
   .q { font-weight: 800; }
-  .flow { font-weight: 700; color: var(--accent); }
-  .flow i { font-style: normal; color: var(--ink); font-weight: 400; margin: 0 .15em; }
+  .flow { font-weight: 700; color: var(--accent); font-size: .9em; }
+  .flow span { white-space: nowrap; }
+  .flow i { font-style: normal; color: var(--ink); font-weight: 400; margin: 0 .35em; }
   .cap { font-size: var(--fs-small); line-height: 1.35; }
   .fig svg { display: block; width: 100%; height: auto; }
   .final { font-weight: 800; }
@@ -100,10 +95,56 @@
   .nums .k { display: block; font-size: var(--fs-small); margin-top: 1.5mm; }
 
   /* 발치 */
-  .foot { margin-top: 10mm; padding: 7mm var(--pad-x) 13mm; border-top: .6mm solid var(--ink);
+  .foot { margin-top: 8mm; padding: 6mm var(--pad-x) 11mm; border-top: .6mm solid var(--ink);
     display: grid; grid-template-columns: 1fr auto; gap: 14mm; align-items: center; font-size: var(--fs-small); line-height: 1.5; }
   .foot .qr { display: grid; grid-template-columns: 30mm auto; gap: 4mm; align-items: center; }
   .foot .qr svg { width: 30mm; height: 30mm; display: block; }
+
+  /* ════════════ v4: 공통 양식 위에 덮어쓴다(단 폭은 그대로) ════════════ */
+  .poster { grid-template-rows: auto auto 1fr auto; }
+  .head { padding-bottom: 8mm; }
+
+  /* 요약 상자(초록) */
+  .abstract { margin: 7mm var(--pad-x) 0; padding: 5.5mm 8mm 6mm; background: var(--tint);
+    border-left: 2mm solid var(--accent); font-size: 25pt; line-height: 1.42; }
+  .abstract h2 { font-size: 28pt; font-weight: 800; color: var(--accent); margin-bottom: 1.5mm; }
+  .abstract p + p { margin-top: 1mm; }
+  .abstract .lb { color: var(--accent); }
+  .abstract .end { font-weight: 800; }
+
+  .body { padding-top: 9mm; }
+  .col { gap: 7mm; }
+  .nums .v { font-size: 48pt; }
+
+  /* 파이프라인: 6칸 한 줄, 칸 사이 화살표 */
+  .pipe { display: grid; grid-template-columns: repeat(6, 1fr); column-gap: 5mm; }
+  .pipe div { position: relative; border: .6mm solid var(--accent); border-radius: 2mm; padding: 2mm 1mm 2.2mm;
+    text-align: center; font-size: var(--fs-small); line-height: 1.22; letter-spacing: -.03em;
+    display: flex; flex-direction: column; justify-content: center; }
+  .pipe div b { display: block; color: var(--ink); font-weight: 800; }
+  .pipe div span { display: block; margin-top: 1mm; }
+  .pipe div.pk { background: var(--accent); color: #fff; }
+  .pipe div.pk b { color: #fff; }
+  .pipe div:not(:last-child)::after { content: ""; position: absolute; right: -4.6mm; top: 50%; margin-top: -2mm;
+    border-left: 3.4mm solid var(--accent); border-top: 2mm solid transparent; border-bottom: 2mm solid transparent; }
+
+  /* 그림·표 캡션: 번호는 굵게, 그래프가 말하는 것 한 문장 포함 */
+  .figcap { font-size: 22pt; line-height: 1.35; }
+  .figcap .no, .tabcap .no { font-weight: 800; color: var(--accent); margin-right: .3em; }
+  .tabcap { font-size: 22pt; line-height: 1.35; }
+  .sec .tabcap + table { margin-top: 1.5mm; }
+
+  /* 발치: 참고문헌 */
+  .foot .ref-lab { font-weight: 800; color: var(--accent); margin-right: .4em; }
+
+  /* 우리 팀이 찾아낸 것: 번호 원 + 굵은 헤드라인 + 근거 한 줄 */
+  .finds { list-style: none; counter-reset: f; }
+  .sec .finds li { padding-left: 14mm; text-indent: 0; position: relative; }
+  .sec .finds li::before { counter-increment: f; content: counter(f); position: absolute; left: 0; top: .6mm;
+    width: 10mm; height: 10mm; border-radius: 50%; background: var(--accent); color: #fff;
+    font-size: 22pt; line-height: 10mm; text-align: center; font-weight: 800; }
+  .sec .finds li + li { margin-top: 2.5mm; }
+  .finds .hl { display: block; font-size: 26pt; font-weight: 800; line-height: 1.3; }
 </style>
 </head>
 <body>
@@ -113,16 +154,23 @@
   <!-- ════════ 제목띠 ════════ -->
   <header class="head">
     <div>
-      <!-- 내용 시작: 제목(핵심 질문) · 팀 · 학교 줄 -->
       <h1>혈액 수치와 체질량지수로<br>1년 뒤 당뇨 진행을 예측할 수 있는가</h1>
       <div class="team">검진표연구소 · 10101 홍길동 · 10102 김영희 · 10103 이철수</div>
       <div class="school">당곡고등학교 데이터 과학 팀 프로젝트 · 2026</div>
       <div class="note">선생님이 만든 가상 팀의 샘플 · 데이터와 수치는 실제 계산값</div>
-      <!-- 내용 끝 -->
     </div>
     <div class="qr"><!-- FIG:qr_repo --><svg role="img" aria-label="https://github.com/greatsong/ds-sample-5-biochem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges" class="segno"><path class="qrline" stroke="#000" d="M2 2.5h7m1 0h5m3 0h1m1 0h4m1 0h1m2 0h7m-33 1h1m5 0h1m1 0h1m1 0h3m1 0h1m1 0h2m2 0h2m1 0h2m1 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m2 0h1m3 0h3m2 0h1m5 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m3 0h2m4 0h3m5 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m3 0h2m1 0h4m1 0h1m2 0h2m1 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h1m1 0h1m3 0h6m4 0h1m-25 1h1m1 0h2m1 0h3m3 0h2m1 0h5m1 0h5m1 0h1m2 0h1m1 0h2m-26 1h5m1 0h2m2 0h4m2 0h1m2 0h2m1 0h2m1 0h1m-33 1h3m3 0h2m2 0h1m2 0h1m2 0h1m1 0h1m4 0h1m1 0h1m1 0h3m1 0h2m-33 1h4m1 0h1m3 0h3m3 0h1m1 0h1m2 0h1m1 0h1m4 0h1m1 0h1m2 0h1m-32 1h1m1 0h4m3 0h1m1 0h1m1 0h3m3 0h1m1 0h3m2 0h3m-30 1h1m1 0h2m1 0h1m1 0h2m1 0h1m2 0h2m2 0h1m2 0h2m2 0h2m3 0h1m1 0h1m-30 1h5m2 0h5m5 0h3m2 0h1m1 0h4m-29 1h2m1 0h2m1 0h3m3 0h3m5 0h1m2 0h3m2 0h2m-31 1h2m1 0h1m1 0h5m1 0h2m1 0h1m3 0h1m1 0h3m2 0h2m1 0h3m-30 1h2m1 0h1m2 0h1m2 0h1m4 0h1m2 0h1m1 0h1m1 0h5m1 0h2m2 0h1m-31 1h2m1 0h2m1 0h3m2 0h1m1 0h1m2 0h1m1 0h3m1 0h2m1 0h2m1 0h2m-32 1h2m1 0h3m2 0h1m4 0h1m1 0h5m2 0h5m1 0h1m2 0h2m-31 1h1m3 0h4m1 0h1m1 0h4m4 0h1m3 0h1m3 0h2m1 0h1m-33 1h1m2 0h3m2 0h2m1 0h1m1 0h1m1 0h2m3 0h2m1 0h1m2 0h1m2 0h1m2 0h1m-31 1h3m1 0h3m2 0h3m1 0h1m1 0h5m1 0h1m1 0h2m4 0h2m-32 1h1m1 0h3m9 0h1m4 0h1m2 0h1m2 0h2m1 0h1m1 0h1m-32 1h1m3 0h3m1 0h2m2 0h1m1 0h1m2 0h1m1 0h1m2 0h1m1 0h6m-22 1h1m3 0h5m1 0h4m2 0h1m3 0h2m-30 1h7m1 0h1m5 0h1m2 0h4m2 0h2m1 0h1m1 0h1m2 0h1m-32 1h1m5 0h1m1 0h2m1 0h1m2 0h1m1 0h3m1 0h5m3 0h5m-33 1h1m1 0h3m1 0h1m2 0h1m5 0h6m2 0h6m1 0h1m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h5m1 0h1m2 0h1m1 0h3m3 0h1m4 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h1m1 0h4m3 0h1m3 0h2m2 0h1m-31 1h1m5 0h1m3 0h5m2 0h2m1 0h1m1 0h4m1 0h2m3 0h1m-33 1h7m1 0h3m1 0h1m1 0h1m1 0h4m1 0h1m1 0h1m4 0h1m1 0h1"/></svg>
 <!-- /FIG:qr_repo -->저장소</div>
   </header>
+
+  <!-- ════════ 요약(초록) ════════ -->
+  <section class="abstract">
+    <h2>요약</h2>
+    <p><span class="lb">연구 질문:</span>혈액 생화학 수치와 체질량지수로 1년 뒤 당뇨 진행 정도를 예측할 수 있는가</p>
+    <p><span class="lb">데이터와 방법:</span>Efron 외(2004) 당뇨 환자 442명 · 체질량지수와 중성지방 로그값으로 진행 점수를 예측하는 선형 회귀를 기준선(평균 모델)과 비교</p>
+    <p><span class="lb">핵심 결과:</span>MAE 44.0점, 기준선 64.0점보다 오차 31% 감소 · R² 0.452</p>
+    <p class="end"><span class="lb">결론:</span>예측은 가능하지만 진행 정도 차이의 절반에 못 미침 · 이 데이터에서 그 설명력은 혈당보다 체질량지수·중성지방에서 나옴</p>
+  </section>
 
   <div class="body">
 
@@ -131,186 +179,178 @@
 
       <section class="sec">
         <h2>1. 서론</h2>
-        <!-- 내용 시작: 연구 질문 1줄 · 왜 이 주제인가 3줄 -->
-        <p class="q">연구 질문: 혈액 수치와 체질량지수로 1년 뒤 당뇨 진행을 예측할 수 있는가</p>
-        <ul>
-          <li>생명과학 시간에 배운 혈당·지질 대사에서 생긴 질문</li>
-          <li>진행 점수와의 상관계수: 혈당 <b>0.38</b>, 체질량지수 <b>0.59</b>, 중성지방 <b>0.57</b></li>
-          <li>뇌졸중 분류(걸린다·안 걸린다)와 달리 진행 정도를 숫자로 예측</li>
-        </ul>
-        <!-- 내용 끝 -->
+        <p class="intro">건강검진표에는 콜레스테롤·중성지방·혈당 같은 혈액 수치와 체질량지수가 적혀 있다. 그러나 이 수치들이 1년 뒤 당뇨 진행을 얼마나 알려 주는지는 검진표만으로 알 수 없다. 이 연구는 혈액 생화학 수치와 체질량지수로 1년 뒤 당뇨 진행 정도를 예측할 수 있는가를 밝히고자 한다. Efron 외(2004)의 당뇨 환자 442명 데이터에서 체질량지수와 중성지방 로그값으로 선형 회귀를 만들고, 후보 모델 5종을 평균 모델(기준선)과 비교하였다. 그 결과 이 데이터에서 혈당보다 체질량지수와 중성지방이 진행을 더 잘 알려 주었고, HDL이 높은 환자는 진행 점수가 낮았으며, 급격히 진행한 환자는 낮게 예측됨을 확인하였다.</p>
       </section>
 
       <section class="sec">
         <h2>2. 데이터</h2>
-        <!-- 내용 시작: 출처·크기 · 변수 표(3~5행) · 분포 그래프 · 전처리 판단 2~3줄 -->
-        <p><span class="lb">출처·크기:</span>Efron 외(2004) 당뇨 연구 데이터 · <b>442행 · 11열</b> · 결측값 0개</p>
-        <table class="t">
-          <tr><th>사용한 열</th><th>뜻</th><th class="r">범위</th></tr>
-          <tr><td>bmi</td><td>체질량지수(입력)</td><td class="r">18.0~42.2</td></tr>
-          <tr><td>ltg</td><td>중성지방 로그값(입력)</td><td class="r">3.26~6.11</td></tr>
-          <tr><td>progression</td><td>1년 뒤 진행 점수(예측할 값)</td><td class="r">25~346점</td></tr>
-        </table>
-        <div class="fig"><!-- FIG:hist --><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 640.283711 163.858125" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <ul>
+          <li>Efron 외(2004) 당뇨 연구 데이터 <b>442행 · 11열</b></li>
+          <li>입력: 체질량지수 bmi(18.0~42.2) · 중성지방 로그값 ltg(3.26~6.11)</li>
+          <li>예측: 1년 뒤 진행 점수 progression(25~346점)</li>
+          <li>결측값 0개 · 250점 이상 <b>65명(14.7%)</b>도 실제 측정값이라 유지</li>
+          <li>진행 점수는 왜도 <b>0.44</b>라 로그 변환 안 함 · ltg는 로그값 그대로</li>
+        </ul>
+        <div class="fig"><!-- FIG:hist --><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 640.283711 171.15731" xmlns="http://www.w3.org/2000/svg" version="1.1">
  
  <defs>
   <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 163.858125 
-L 640.283711 163.858125 
+   <path d="M 0 171.15731 
+L 640.283711 171.15731 
 L 640.283711 0 
 L 0 0 
-L 0 163.858125 
+L 0 171.15731 
 z
 " style="fill: none"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 64.71875 114.48 
-L 635.899852 114.48 
-L 635.899852 3.6 
-L 64.71875 3.6 
-L 64.71875 114.48 
+    <path d="M 64.71875 121.779185 
+L 635.899852 121.779185 
+L 635.899852 5.355185 
+L 64.71875 5.355185 
+L 64.71875 121.779185 
 z
 " style="fill: none"/>
    </g>
    <g id="patch_3">
-    <path d="M 96.451033 114.48 
-L 128.183317 114.48 
-L 128.183317 104.326154 
-L 96.451033 104.326154 
+    <path d="M 96.451033 121.779185 
+L 128.183317 121.779185 
+L 128.183317 111.117647 
+L 96.451033 111.117647 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
-    <path d="M 128.183317 114.48 
-L 159.9156 114.48 
-L 159.9156 37.310769 
-L 128.183317 37.310769 
+    <path d="M 128.183317 121.779185 
+L 159.9156 121.779185 
+L 159.9156 40.751493 
+L 128.183317 40.751493 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
-    <path d="M 159.9156 114.48 
-L 191.647884 114.48 
-L 191.647884 8.88 
-L 159.9156 8.88 
+    <path d="M 159.9156 121.779185 
+L 191.647884 121.779185 
+L 191.647884 10.899185 
+L 159.9156 10.899185 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
-    <path d="M 191.647884 114.48 
-L 223.380167 114.48 
-L 223.380167 8.88 
-L 191.647884 8.88 
+    <path d="M 191.647884 121.779185 
+L 223.380167 121.779185 
+L 223.380167 10.899185 
+L 191.647884 10.899185 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
-    <path d="M 223.380167 114.48 
-L 255.112451 114.48 
-L 255.112451 41.372308 
-L 223.380167 41.372308 
+    <path d="M 223.380167 121.779185 
+L 255.112451 121.779185 
+L 255.112451 45.016108 
+L 223.380167 45.016108 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
-    <path d="M 255.112451 114.48 
-L 286.844734 114.48 
-L 286.844734 41.372308 
-L 255.112451 41.372308 
+    <path d="M 255.112451 121.779185 
+L 286.844734 121.779185 
+L 286.844734 45.016108 
+L 255.112451 45.016108 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_9">
-    <path d="M 286.844734 114.48 
-L 318.577018 114.48 
-L 318.577018 43.403077 
-L 286.844734 43.403077 
+    <path d="M 286.844734 121.779185 
+L 318.577018 121.779185 
+L 318.577018 47.148416 
+L 286.844734 47.148416 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_10">
-    <path d="M 318.577018 114.48 
-L 350.309301 114.48 
-L 350.309301 49.495385 
-L 318.577018 49.495385 
+    <path d="M 318.577018 121.779185 
+L 350.309301 121.779185 
+L 350.309301 53.545339 
+L 318.577018 53.545339 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_11">
-    <path d="M 350.309301 114.48 
-L 382.041585 114.48 
-L 382.041585 55.587692 
-L 350.309301 55.587692 
+    <path d="M 350.309301 121.779185 
+L 382.041585 121.779185 
+L 382.041585 59.942262 
+L 350.309301 59.942262 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_12">
-    <path d="M 382.041585 114.48 
-L 413.773868 114.48 
-L 413.773868 61.68 
-L 382.041585 61.68 
+    <path d="M 382.041585 121.779185 
+L 413.773868 121.779185 
+L 413.773868 66.339185 
+L 382.041585 66.339185 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_13">
-    <path d="M 413.773868 114.48 
-L 445.506152 114.48 
-L 445.506152 71.833846 
-L 413.773868 71.833846 
+    <path d="M 413.773868 121.779185 
+L 445.506152 121.779185 
+L 445.506152 77.000723 
+L 413.773868 77.000723 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_14">
-    <path d="M 445.506152 114.48 
-L 477.238435 114.48 
-L 477.238435 59.649231 
-L 445.506152 59.649231 
+    <path d="M 445.506152 121.779185 
+L 477.238435 121.779185 
+L 477.238435 64.206877 
+L 445.506152 64.206877 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_15">
-    <path d="M 477.238435 114.48 
-L 508.970719 114.48 
-L 508.970719 63.710769 
-L 477.238435 63.710769 
+    <path d="M 477.238435 121.779185 
+L 508.970719 121.779185 
+L 508.970719 68.471493 
+L 477.238435 68.471493 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_16">
-    <path d="M 508.970719 114.48 
-L 540.703002 114.48 
-L 540.703002 86.049231 
-L 508.970719 86.049231 
+    <path d="M 508.970719 121.779185 
+L 540.703002 121.779185 
+L 540.703002 91.926877 
+L 508.970719 91.926877 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_17">
-    <path d="M 540.703002 114.48 
-L 572.435285 114.48 
-L 572.435285 96.203077 
-L 540.703002 96.203077 
+    <path d="M 540.703002 121.779185 
+L 572.435285 121.779185 
+L 572.435285 102.588416 
+L 540.703002 102.588416 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_18">
-    <path d="M 572.435285 114.48 
-L 604.167569 114.48 
-L 604.167569 108.387692 
-L 572.435285 108.387692 
+    <path d="M 572.435285 121.779185 
+L 604.167569 121.779185 
+L 604.167569 115.382262 
+L 572.435285 115.382262 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="patch_19">
-    <path d="M 604.167569 114.48 
-L 635.899852 114.48 
-L 635.899852 110.418462 
-L 604.167569 110.418462 
+    <path d="M 604.167569 121.779185 
+L 635.899852 121.779185 
+L 635.899852 117.51457 
+L 604.167569 117.51457 
 z
-" clip-path="url(#p15a2893a2e)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
+" clip-path="url(#pdd16dcaf67)" style="fill: #1f3d7a; stroke: #ffffff; stroke-width: 0.6; stroke-linejoin: miter"/>
    </g>
    <g id="matplotlib.axis_1">
     <g id="xtick_1">
@@ -321,85 +361,85 @@ L 0 3.5
 " style="stroke: #000000; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#me6267705f3" x="64.71875" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="64.71875" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_1">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="64.71875" y="136.639375" transform="rotate(-0 64.71875 136.639375)">0</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="64.71875" y="143.93856" transform="rotate(-0 64.71875 143.93856)">0</text>
      </g>
     </g>
     <g id="xtick_2">
      <g id="line2d_2">
       <g>
-       <use xlink:href="#me6267705f3" x="144.049459" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="144.049459" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_2">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="144.049459" y="136.639375" transform="rotate(-0 144.049459 136.639375)">50</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="144.049459" y="143.93856" transform="rotate(-0 144.049459 143.93856)">50</text>
      </g>
     </g>
     <g id="xtick_3">
      <g id="line2d_3">
       <g>
-       <use xlink:href="#me6267705f3" x="223.380167" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="223.380167" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_3">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="223.380167" y="136.639375" transform="rotate(-0 223.380167 136.639375)">100</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="223.380167" y="143.93856" transform="rotate(-0 223.380167 143.93856)">100</text>
      </g>
     </g>
     <g id="xtick_4">
      <g id="line2d_4">
       <g>
-       <use xlink:href="#me6267705f3" x="302.710876" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="302.710876" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_4">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="302.710876" y="136.639375" transform="rotate(-0 302.710876 136.639375)">150</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="302.710876" y="143.93856" transform="rotate(-0 302.710876 143.93856)">150</text>
      </g>
     </g>
     <g id="xtick_5">
      <g id="line2d_5">
       <g>
-       <use xlink:href="#me6267705f3" x="382.041585" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="382.041585" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_5">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="382.041585" y="136.639375" transform="rotate(-0 382.041585 136.639375)">200</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="382.041585" y="143.93856" transform="rotate(-0 382.041585 143.93856)">200</text>
      </g>
     </g>
     <g id="xtick_6">
      <g id="line2d_6">
       <g>
-       <use xlink:href="#me6267705f3" x="461.372293" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="461.372293" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_6">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="461.372293" y="136.639375" transform="rotate(-0 461.372293 136.639375)">250</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="461.372293" y="143.93856" transform="rotate(-0 461.372293 143.93856)">250</text>
      </g>
     </g>
     <g id="xtick_7">
      <g id="line2d_7">
       <g>
-       <use xlink:href="#me6267705f3" x="540.703002" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="540.703002" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_7">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="540.703002" y="136.639375" transform="rotate(-0 540.703002 136.639375)">300</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="540.703002" y="143.93856" transform="rotate(-0 540.703002 143.93856)">300</text>
      </g>
     </g>
     <g id="xtick_8">
      <g id="line2d_8">
       <g>
-       <use xlink:href="#me6267705f3" x="620.033711" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="620.033711" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_8">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="620.033711" y="136.639375" transform="rotate(-0 620.033711 136.639375)">350</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="620.033711" y="143.93856" transform="rotate(-0 620.033711 143.93856)">350</text>
      </g>
     </g>
     <g id="text_9">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="350.309301" y="158.139375" transform="rotate(-0 350.309301 158.139375)">1년 뒤 진행 점수(점)</text>
+     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="350.309301" y="165.43856" transform="rotate(-0 350.309301 165.43856)">1년 뒤 진행 점수(점)</text>
     </g>
    </g>
    <g id="matplotlib.axis_2">
@@ -411,110 +451,103 @@ L -3.5 0
 " style="stroke: #000000; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#md199876d22" x="64.71875" y="114.48" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#md199876d22" x="64.71875" y="121.779185" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_10">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="57.71875" y="122.059687" transform="rotate(-0 57.71875 122.059687)">0</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="57.71875" y="129.358873" transform="rotate(-0 57.71875 129.358873)">0</text>
      </g>
     </g>
     <g id="ytick_2">
      <g id="line2d_10">
       <g>
-       <use xlink:href="#md199876d22" x="64.71875" y="12.941538" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#md199876d22" x="64.71875" y="15.1638" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_11">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="57.71875" y="20.521226" transform="rotate(-0 57.71875 20.521226)">50</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="57.71875" y="22.743488" transform="rotate(-0 57.71875 22.743488)">50</text>
      </g>
     </g>
     <g id="text_12">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="19.01875" y="59.04" transform="rotate(-90 19.01875 59.04)">환자 수(명)</text>
+     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="19.01875" y="63.567185" transform="rotate(-90 19.01875 63.567185)">환자 수(명)</text>
     </g>
    </g>
    <g id="line2d_11">
-    <path d="M 287.638041 114.48 
-L 287.638041 3.6 
-" clip-path="url(#p15a2893a2e)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.4"/>
+    <path d="M 287.638041 121.779185 
+L 287.638041 5.355185 
+" clip-path="url(#pdd16dcaf67)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.4"/>
    </g>
    <g id="line2d_12">
-    <path d="M 306.095892 114.48 
-L 306.095892 3.6 
-" clip-path="url(#p15a2893a2e)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.4"/>
+    <path d="M 306.095892 121.779185 
+L 306.095892 5.355185 
+" clip-path="url(#pdd16dcaf67)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.4"/>
    </g>
    <g id="patch_20">
-    <path d="M 64.71875 114.48 
-L 64.71875 3.6 
+    <path d="M 64.71875 121.779185 
+L 64.71875 5.355185 
 " style="fill: none; stroke: #000000; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_21">
-    <path d="M 64.71875 114.48 
-L 635.899852 114.48 
+    <path d="M 64.71875 121.779185 
+L 635.899852 121.779185 
 " style="fill: none; stroke: #000000; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_22">
-    <path d="M 455.372151 53.496 
-Q 371.505096 53.496 287.638041 53.496 
+    <path d="M 474.409124 44.939345 
+Q 381.023583 44.939345 287.638041 44.939345 
 " style="fill: none; stroke: #000000; stroke-linecap: round"/>
    </g>
    <g id="text_13">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="461.372293" y="60.117875" transform="rotate(-0 461.372293 60.117875)">중앙값 140.5점</text>
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="480.411663" y="51.56122" transform="rotate(-0 480.411663 51.56122)">중앙값 140.5점</text>
    </g>
    <g id="patch_23">
-    <path d="M 455.372154 20.232 
-Q 380.734023 20.232 306.095892 20.232 
+    <path d="M 474.415271 12.340625 
+Q 390.255581 12.340625 306.095892 12.340625 
 " style="fill: none; stroke: #000000; stroke-linecap: round"/>
    </g>
    <g id="text_14">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="461.372293" y="26.853875" transform="rotate(-0 461.372293 26.853875)">평균 152.1점</text>
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="480.411663" y="18.9625" transform="rotate(-0 480.411663 18.9625)">평균 152.1점</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p15a2893a2e">
-   <rect x="64.71875" y="3.6" width="571.181102" height="110.88"/>
+  <clipPath id="pdd16dcaf67">
+   <rect x="64.71875" y="5.355185" width="571.181102" height="116.424"/>
   </clipPath>
  </defs>
 </svg>
 <!-- /FIG:hist --></div>
-        <p class="cap">진행 점수 분포(442명): 평균 152.1점, 중앙값 140.5점</p>
-        <ul>
-          <li>250점 이상 <b>65명(14.7%)</b>도 실제 측정값이라 이상값으로 빼지 않음</li>
-          <li>왜도 <b>0.44</b>로 치우침이 작아 로그 변환하지 않음</li>
-          <li>sex는 어느 쪽이 남자인지 출처에 없어 계수를 해석하지 않음</li>
-        </ul>
-        <!-- 내용 끝 -->
+        <p class="figcap"><span class="no">그림 1.</span>진행 점수 분포(442명). 높은 점수 쪽으로 약하게 치우침</p>
       </section>
 
       <section class="sec">
         <h2>3. 방법</h2>
-        <!-- 내용 시작: 분석 흐름 · 후보 모델 표 · 선택 이유 2줄 · 모델 소개 표(행 3, 열 6) · 평가지표 2줄 -->
-        <p class="flow">수집(442명)<i>→</i>변수 선택(bmi·ltg)<i>→</i>전처리(이상값 유지)<i>→</i>분할(8:2)<i>→</i>기준선(평균)<i>→</i>후보 5종 비교<i>→</i>선택(선형 회귀)<i>→</i>평가(MAE·R²)<i>→</i>해석(오차)</p>
+        <div class="pipe">
+          <div><b>데이터<br>수집</b><span>442명</span></div>
+          <div><b>전처리</b><span>결측 0·<br>로그값 유지</span></div>
+          <div><b>분할·<br>기준선</b><span>8:2·<br>평균 153.7</span></div>
+          <div><b>후보 모델<br>5종 비교</b><span>MAE·R²</span></div>
+          <div class="pk"><b>선택:<br>선형 회귀</b><span>계수로 해석</span></div>
+          <div><b>평가·<br>해석</b><span>구간별 오차</span></div>
+        </div>
+        <p class="tabcap"><span class="no">표 1.</span>후보 모델 비교(입력 bmi·ltg, 시험 89명)</p>
         <table class="t">
-          <tr><th>후보 모델(입력 bmi·ltg, 예측 진행 점수)</th><th class="r">시험 MAE</th><th class="r">R²</th></tr>
-          <tr><td>평균 모델(기준선)</td><td class="r">64.0점</td><td class="r">-0.012</td></tr>
-          <tr class="pick"><td>선형 회귀(선택)</td><td class="r">44.0점</td><td class="r">0.452</td></tr>
-          <tr><td>k-NN 회귀(k=5)</td><td class="r">44.7점</td><td class="r">0.379</td></tr>
-          <tr><td>결정 트리 회귀(깊이 4)</td><td class="r">44.9점</td><td class="r">0.436</td></tr>
-          <tr><td>랜덤 포레스트 회귀(300그루)</td><td class="r">43.9점</td><td class="r">0.420</td></tr>
-          <tr><td>XGBoost 회귀(기본값)</td><td class="r">50.7점</td><td class="r">0.196</td></tr>
+          <tr><th>모델</th><th class="r">시험 MAE(점)</th><th class="r">R²</th></tr>
+          <tr><td>평균 모델(기준선)</td><td class="r">64.0</td><td class="r">-0.012</td></tr>
+          <tr class="pick"><td>선형 회귀(선택)</td><td class="r">44.0</td><td class="r">0.452</td></tr>
+          <tr><td>k-NN 회귀(k=5)</td><td class="r">44.7</td><td class="r">0.379</td></tr>
+          <tr><td>결정 트리 회귀(깊이 4)</td><td class="r">44.9</td><td class="r">0.436</td></tr>
+          <tr><td>랜덤 포레스트 회귀(300그루)</td><td class="r">43.9</td><td class="r">0.420</td></tr>
+          <tr><td>XGBoost 회귀(기본값)</td><td class="r">50.7</td><td class="r">0.196</td></tr>
         </table>
         <ul>
-          <li>랜덤 포레스트와 MAE 차이는 <b>0.07점</b>, R²는 선형 회귀가 가장 높음</li>
-          <li>계수로 "체질량지수 1 오르면 7.9점"처럼 답을 읽을 수 있어 선택</li>
+          <li>랜덤 포레스트와 MAE 차이 <b>0.07점</b>, R²는 선형 회귀가 가장 높음</li>
+          <li>계수로 답을 읽음: 체질량지수 1당 <b>7.9점</b>, 중성지방 로그값 1당 <b>51.3점</b></li>
         </ul>
-        <table class="models">
-          <colgroup><col style="width:15%"><col style="width:20%"><col style="width:17%"><col style="width:16%"><col style="width:17%"><col style="width:15%"></colgroup>
-          <tr><th>모델</th><th>원리</th><th>장점</th><th>단점</th><th>이런 상황에 좋다</th><th>우리 데이터 결과</th></tr>
-          <tr class="pick"><td>선형 회귀<br>(선택)</td><td>오차가 가장 작은 직선(평면)</td><td>계수로 영향의 크기 해석</td><td>곡선 관계에 약함</td><td>이유를 설명해야 할 때</td><td>MAE 44.0점<br>R² 0.452</td></tr>
-          <tr><td>랜덤 포레스트<br>(비교 1)</td><td>트리 여러 개의 예측을 평균</td><td>예측이 안정적</td><td>이유 해석이 어려움</td><td>관계가 복잡할 때</td><td>MAE 43.9점<br>R² 0.420</td></tr>
-          <tr><td>XGBoost<br>(비교 2)</td><td>트리를 차례로 더해 오차를 줄임</td><td>표 데이터에서 정확도 높음</td><td>작은 데이터를 외우기 쉬움</td><td>데이터가 많을 때</td><td>MAE 50.7점<br>R² 0.196</td></tr>
-        </table>
         <ul>
-          <li><span class="lb">MAE:</span>예측 진행 점수가 실제와 평균 몇 점 차이 나는가</li>
-          <li><span class="lb">R²:</span>평균 모델보다 오차를 얼마나 줄였는가(1에 가까울수록 좋음)</li>
+          <li><span class="lb">MAE:</span>예측과 실제 진행 점수의 평균 차이(점)</li>
+          <li><span class="lb">R²:</span>평균 모델보다 줄인 오차의 비율</li>
         </ul>
-        <!-- 내용 끝 -->
       </section>
     </div>
 
@@ -523,323 +556,28 @@ Q 380.734023 20.232 306.095892 20.232
 
       <section class="sec">
         <h2>4. 결과</h2>
-        <!-- 내용 시작: 평가지표 비교 막대 그래프 · 결과 그래프 · 핵심 수치 3개 -->
-        <div class="fig"><!-- FIG:bars --><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 759.840477 336.06275" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <div class="fig"><!-- FIG:result --><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 652.899852 271.966125" xmlns="http://www.w3.org/2000/svg" version="1.1">
  
  <defs>
   <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 336.06275 
-L 759.840477 336.06275 
-L 759.840477 0 
-L 0 0 
-L 0 336.06275 
-z
-" style="fill: none"/>
-  </g>
-  <g id="axes_1">
-   <g id="patch_2">
-    <path d="M 185.059375 286.344 
-L 756.240477 286.344 
-L 756.240477 3.6 
-L 185.059375 3.6 
-L 185.059375 286.344 
-z
-" style="fill: none"/>
-   </g>
-   <g id="patch_3">
-    <path d="M 185.059375 34.937753 
-L 550.652187 34.937753 
-L 550.652187 16.452 
-L 185.059375 16.452 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #4a4f57"/>
-   </g>
-   <g id="patch_4">
-    <path d="M 185.059375 53.423507 
-L 564.598673 53.423507 
-L 564.598673 34.937753 
-L 185.059375 34.937753 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #c4c7cc"/>
-   </g>
-   <g id="patch_5">
-    <path d="M 185.059375 78.951452 
-L 436.311909 78.951452 
-L 436.311909 60.465699 
-L 185.059375 60.465699 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #1f3d7a"/>
-   </g>
-   <g id="patch_6">
-    <path d="M 185.059375 97.437205 
-L 456.580856 97.437205 
-L 456.580856 78.951452 
-L 185.059375 78.951452 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #b4c1db"/>
-   </g>
-   <g id="patch_7">
-    <path d="M 185.059375 122.965151 
-L 440.37091 122.965151 
-L 440.37091 104.479397 
-L 185.059375 104.479397 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #9aa0aa"/>
-   </g>
-   <g id="patch_8">
-    <path d="M 185.059375 141.450904 
-L 415.664441 141.450904 
-L 415.664441 122.965151 
-L 185.059375 122.965151 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #dcdfe3"/>
-   </g>
-   <g id="patch_9">
-    <path d="M 185.059375 166.978849 
-L 441.264417 166.978849 
-L 441.264417 148.493096 
-L 185.059375 148.493096 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #9aa0aa"/>
-   </g>
-   <g id="patch_10">
-    <path d="M 185.059375 185.464603 
-L 425.287485 185.464603 
-L 425.287485 166.978849 
-L 185.059375 166.978849 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #dcdfe3"/>
-   </g>
-   <g id="patch_11">
-    <path d="M 185.059375 210.992548 
-L 435.916559 210.992548 
-L 435.916559 192.506795 
-L 185.059375 192.506795 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #9aa0aa"/>
-   </g>
-   <g id="patch_12">
-    <path d="M 185.059375 229.478301 
-L 295.166267 229.478301 
-L 295.166267 210.992548 
-L 185.059375 210.992548 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #dcdfe3"/>
-   </g>
-   <g id="patch_13">
-    <path d="M 185.059375 255.006247 
-L 474.874354 255.006247 
-L 474.874354 236.520493 
-L 185.059375 236.520493 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #9aa0aa"/>
-   </g>
-   <g id="patch_14">
-    <path d="M 185.059375 273.492 
-L 210.227114 273.492 
-L 210.227114 255.006247 
-L 185.059375 255.006247 
-z
-" clip-path="url(#p32dbd43e85)" style="fill: #dcdfe3"/>
-   </g>
-   <g id="matplotlib.axis_1">
-    <g id="xtick_1">
-     <g id="line2d_1">
-      <defs>
-       <path id="me6267705f3" d="M 0 0 
-L 0 3.5 
-" style="stroke: #000000; stroke-width: 0.8"/>
-      </defs>
-      <g>
-       <use xlink:href="#me6267705f3" x="185.059375" y="286.344" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_1">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="185.059375" y="308.503375" transform="rotate(-0 185.059375 308.503375)">0</text>
-     </g>
-    </g>
-    <g id="xtick_2">
-     <g id="line2d_2">
-      <g>
-       <use xlink:href="#me6267705f3" x="299.295595" y="286.344" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_2">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="299.295595" y="308.503375" transform="rotate(-0 299.295595 308.503375)">20</text>
-     </g>
-    </g>
-    <g id="xtick_3">
-     <g id="line2d_3">
-      <g>
-       <use xlink:href="#me6267705f3" x="413.531816" y="286.344" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_3">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="413.531816" y="308.503375" transform="rotate(-0 413.531816 308.503375)">40</text>
-     </g>
-    </g>
-    <g id="xtick_4">
-     <g id="line2d_4">
-      <g>
-       <use xlink:href="#me6267705f3" x="527.768036" y="286.344" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_4">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="527.768036" y="308.503375" transform="rotate(-0 527.768036 308.503375)">60</text>
-     </g>
-    </g>
-    <g id="xtick_5">
-     <g id="line2d_5">
-      <g>
-       <use xlink:href="#me6267705f3" x="642.004257" y="286.344" style="stroke: #000000; stroke-width: 0.8"/>
-      </g>
-     </g>
-     <g id="text_5">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="642.004257" y="308.503375" transform="rotate(-0 642.004257 308.503375)">80</text>
-     </g>
-    </g>
-    <g id="text_6">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="470.649926" y="330.344" transform="rotate(-0 470.649926 330.344)">MAE(점, 작을수록 좋음)</text>
-    </g>
-   </g>
-   <g id="matplotlib.axis_2">
-    <g id="ytick_1">
-     <g id="line2d_6"/>
-     <g id="text_7">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="42.619003" transform="rotate(-0 181.559375 42.619003)">평균 모델(기준선)</text>
-     </g>
-    </g>
-    <g id="ytick_2">
-     <g id="line2d_7"/>
-     <g id="text_8">
-      <text style="font-weight: 700; font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: #1f3d7a" x="181.559375" y="86.632702" transform="rotate(-0 181.559375 86.632702)">선형 회귀(선택)</text>
-     </g>
-    </g>
-    <g id="ytick_3">
-     <g id="line2d_8"/>
-     <g id="text_9">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="130.646401" transform="rotate(-0 181.559375 130.646401)">k-NN 회귀(k=5)</text>
-     </g>
-    </g>
-    <g id="ytick_4">
-     <g id="line2d_9"/>
-     <g id="text_10">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="174.660099" transform="rotate(-0 181.559375 174.660099)">결정 트리 회귀(깊이 4)</text>
-     </g>
-    </g>
-    <g id="ytick_5">
-     <g id="line2d_10"/>
-     <g id="text_11">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="218.673798" transform="rotate(-0 181.559375 218.673798)">랜덤 포레스트 회귀</text>
-     </g>
-    </g>
-    <g id="ytick_6">
-     <g id="line2d_11"/>
-     <g id="text_12">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="262.687497" transform="rotate(-0 181.559375 262.687497)">XGBoost 회귀</text>
-     </g>
-    </g>
-   </g>
-   <g id="patch_15">
-    <path d="M 185.059375 286.344 
-L 756.240477 286.344 
-" style="fill: none; stroke: #000000; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
-   </g>
-   <g id="text_13">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="555.221636" y="32.215189" transform="rotate(-0 555.221636 32.215189)">64.0</text>
-   </g>
-   <g id="text_14">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #555555" x="569.168121" y="50.700943" transform="rotate(-0 569.168121 50.700943)">66.4</text>
-   </g>
-   <g id="text_15">
-    <text style="font-weight: 700; font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #1f3d7a" x="440.881358" y="76.228888" transform="rotate(-0 440.881358 76.228888)">44.0</text>
-   </g>
-   <g id="text_16">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #555555" x="461.150305" y="94.714641" transform="rotate(-0 461.150305 94.714641)">47.5</text>
-   </g>
-   <g id="text_17">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="444.940359" y="120.242586" transform="rotate(-0 444.940359 120.242586)">44.7</text>
-   </g>
-   <g id="text_18">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #555555" x="420.23389" y="138.72834" transform="rotate(-0 420.23389 138.72834)">40.4</text>
-   </g>
-   <g id="text_19">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="445.833865" y="164.256285" transform="rotate(-0 445.833865 164.256285)">44.9</text>
-   </g>
-   <g id="text_20">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #555555" x="429.856934" y="182.742039" transform="rotate(-0 429.856934 182.742039)">42.1</text>
-   </g>
-   <g id="text_21">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="440.486008" y="208.269984" transform="rotate(-0 440.486008 208.269984)">43.9</text>
-   </g>
-   <g id="text_22">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #555555" x="299.735716" y="226.755737" transform="rotate(-0 299.735716 226.755737)">19.3</text>
-   </g>
-   <g id="text_23">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="479.443803" y="252.283682" transform="rotate(-0 479.443803 252.283682)">50.7</text>
-   </g>
-   <g id="text_24">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #555555" x="214.796563" y="270.769436" transform="rotate(-0 214.796563 270.769436)">4.4</text>
-   </g>
-   <g id="legend_1">
-    <g id="patch_16">
-     <path d="M 560.502977 137.85325 
-L 584.502977 137.85325 
-L 584.502977 123.85325 
-L 560.502977 123.85325 
-z
-" style="fill: #9aa0aa; stroke: #9aa0aa; stroke-linejoin: miter"/>
-    </g>
-    <g id="text_25">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="600.502977" y="137.85325" transform="rotate(-0 600.502977 137.85325)">시험 데이터 89명</text>
-    </g>
-    <g id="patch_17">
-     <path d="M 560.502977 165.3345 
-L 584.502977 165.3345 
-L 584.502977 151.3345 
-L 560.502977 151.3345 
-z
-" style="fill: #dcdfe3; stroke: #dcdfe3; stroke-linejoin: miter"/>
-    </g>
-    <g id="text_26">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="600.502977" y="165.3345" transform="rotate(-0 600.502977 165.3345)">훈련 데이터 353명</text>
-    </g>
-   </g>
-  </g>
- </g>
- <defs>
-  <clipPath id="p32dbd43e85">
-   <rect x="185.059375" y="3.6" width="571.181102" height="282.744"/>
-  </clipPath>
- </defs>
-</svg>
-<!-- /FIG:bars --></div>
-        <p class="cap">XGBoost는 훈련 MAE 4.4점, 시험 MAE 50.7점으로 훈련 데이터를 외운 것에 가까움</p>
-        <div class="fig"><!-- FIG:result --><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 652.899852 274.738125" xmlns="http://www.w3.org/2000/svg" version="1.1">
- 
- <defs>
-  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
- </defs>
- <g id="figure_1">
-  <g id="patch_1">
-   <path d="M 0 274.738125 
-L 652.899852 274.738125 
+   <path d="M 0 271.966125 
+L 652.899852 271.966125 
 L 652.899852 0 
 L 0 0 
-L 0 274.738125 
+L 0 271.966125 
 z
 " style="fill: none"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 78.11875 225.36 
-L 649.299852 225.36 
+    <path d="M 78.11875 222.588 
+L 649.299852 222.588 
 L 649.299852 3.6 
 L 78.11875 3.6 
-L 78.11875 225.36 
+L 78.11875 222.588 
 z
 " style="fill: none"/>
    </g>
@@ -857,242 +595,242 @@ C -2.173559 3.742521 -1.109424 4.1833 0 4.1833
 z
 "/>
     </defs>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="425.587254" y="123.428613" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="425.587254" y="121.930756" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="189.181742" y="123.016303" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="189.181742" y="121.523599" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="398.614813" y="104.426726" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="398.614813" y="103.166392" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="443.04001" y="74.248193" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="443.04001" y="73.36509" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="254.232923" y="142.760773" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="254.232923" y="141.021263" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="211.394341" y="150.334024" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="211.394341" y="148.499849" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="462.07938" y="43.289965" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="462.07938" y="42.79384" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="227.260482" y="164.243436" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="227.260482" y="162.235393" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="230.433711" y="135.588509" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="230.433711" y="133.938652" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="227.260482" y="155.801101" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="227.260482" y="153.898587" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="235.193553" y="191.984002" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="235.193553" y="189.629202" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="292.311663" y="162.927335" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="292.311663" y="160.935743" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="184.4219" y="145.045949" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="184.4219" y="143.277875" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="347.843159" y="129.755659" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="347.843159" y="128.178713" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="179.662057" y="160.175738" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="179.662057" y="158.218541" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="281.205364" y="177.131434" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="281.205364" y="174.962291" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="446.213238" y="107.842226" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="446.213238" y="106.539198" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="282.791978" y="121.21126" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="282.791978" y="119.741119" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="265.339222" y="136.939603" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="265.339222" y="135.272858" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="200.288041" y="144.127984" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="200.288041" y="142.371384" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="154.27623" y="186.470519" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="154.27623" y="184.184637" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="247.886467" y="145.936625" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="247.886467" y="144.157418" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="300.244734" y="106.690776" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="300.244734" y="105.402142" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="257.406152" y="172.422373" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="257.406152" y="170.312094" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="220.914026" y="118.777263" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="220.914026" y="117.337547" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="338.323474" y="124.514629" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="338.323474" y="123.003196" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="363.709301" y="109.413032" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="363.709301" y="108.090369" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="447.799852" y="82.661146" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="447.799852" y="81.672881" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="144.756545" y="143.69099" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="144.756545" y="141.939853" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="211.394341" y="143.270885" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="211.394341" y="141.524999" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="351.016388" y="137.74632" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="351.016388" y="136.069491" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="178.075443" y="179.179457" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="178.075443" y="176.984714" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="154.27623" y="185.129226" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="154.27623" y="182.860111" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="249.473081" y="158.674321" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="249.473081" y="156.735892" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="325.630561" y="140.96105" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="325.630561" y="139.244037" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="344.669931" y="141.420871" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="344.669931" y="139.69811" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="220.914026" y="121.025303" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="220.914026" y="119.557486" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="160.622687" y="172.100578" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="160.622687" y="169.994321" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="395.441585" y="173.93154" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="395.441585" y="171.802395" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="216.154183" y="160.863195" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="216.154183" y="158.897405" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="220.914026" y="198.674457" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="220.914026" y="196.236026" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="293.898278" y="123.299486" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="293.898278" y="121.803243" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="328.803789" y="179.576027" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="328.803789" y="177.376327" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="187.595128" y="157.365858" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="187.595128" y="155.443785" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="192.35497" y="160.864189" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="192.35497" y="158.898387" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="349.429774" y="127.518898" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="349.429774" y="125.969911" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="228.847096" y="123.767388" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="228.847096" y="122.265296" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="192.35497" y="164.159567" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="192.35497" y="162.152572" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="317.69749" y="97.143901" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="317.69749" y="95.974602" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="344.669931" y="143.105109" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="344.669931" y="141.361295" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="173.3156" y="163.183164" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="173.3156" y="161.188374" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="271.685679" y="106.690686" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="271.685679" y="105.402053" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="160.622687" y="101.618458" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="160.622687" y="100.393228" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="374.8156" y="122.673955" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="374.8156" y="121.18553" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="239.953396" y="162.808472" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="239.953396" y="160.818366" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="417.654183" y="158.961123" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="417.654183" y="157.019109" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="471.599065" y="103.380914" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="471.599065" y="102.133653" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="365.295915" y="126.506157" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="365.295915" y="124.96983" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="252.646309" y="133.671269" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="252.646309" y="132.045378" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="300.244734" y="147.510654" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="300.244734" y="145.711771" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="398.614813" y="130.929032" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="398.614813" y="129.337419" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="238.366781" y="116.693474" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="238.366781" y="115.279805" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="430.347096" y="109.339427" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="430.347096" y="108.017684" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="174.902215" y="140.040415" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="174.902215" y="138.33491" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="219.327411" y="178.898151" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="219.327411" y="176.706924" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="222.50064" y="144.337296" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="222.50064" y="142.57808" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="373.228986" y="91.429583" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="373.228986" y="90.331713" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="427.173868" y="98.824274" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="427.173868" y="97.633971" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="454.146309" y="124.138436" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="454.146309" y="122.631705" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="447.799852" y="120.241744" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="447.799852" y="118.783722" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="186.008514" y="154.875918" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="186.008514" y="152.984969" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="379.575443" y="139.85404" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="379.575443" y="138.150865" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="230.433711" y="172.42277" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="230.433711" y="170.312485" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="192.35497" y="176.767272" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="192.35497" y="174.602681" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="320.870719" y="162.538028" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="320.870719" y="160.551302" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="233.606939" y="168.392072" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="233.606939" y="166.332171" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="136.823474" y="179.870292" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="136.823474" y="177.666914" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="178.075443" y="194.208818" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="178.075443" y="191.826208" style="fill: #9aa0aa"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C0_0_0392560a98" x="370.055758" y="124.692571" style="fill: #9aa0aa"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C0_0_0392560a98" x="370.055758" y="123.178914" style="fill: #9aa0aa"/>
     </g>
    </g>
    <g id="PathCollection_2">
@@ -1109,35 +847,35 @@ C -2.173559 3.742521 -1.109424 4.1833 0 4.1833
 z
 "/>
     </defs>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="509.677805" y="85.634904" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="509.677805" y="84.609468" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="477.945522" y="143.135751" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="477.945522" y="141.391554" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="549.343159" y="109.265159" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="549.343159" y="107.944345" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="546.169931" y="74.240709" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="546.169931" y="73.3577" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="496.984892" y="81.7404" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="496.984892" y="80.763645" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="514.437648" y="97.875998" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="514.437648" y="96.697548" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="569.969144" y="90.786499" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="569.969144" y="89.696668" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="495.398278" y="113.598072" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="495.398278" y="112.223096" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="487.465207" y="120.240795" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="487.465207" y="118.782785" style="fill: #1f3d7a"/>
     </g>
-    <g clip-path="url(#p1080beb4b7)">
-     <use xlink:href="#C1_0_0392560a98" x="523.957333" y="114.063344" style="fill: #1f3d7a"/>
+    <g clip-path="url(#p5a59f22b9e)">
+     <use xlink:href="#C1_0_0392560a98" x="523.957333" y="112.682552" style="fill: #1f3d7a"/>
     </g>
    </g>
    <g id="matplotlib.axis_1">
@@ -1149,45 +887,45 @@ L 0 3.5
 " style="stroke: #000000; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#me6267705f3" x="78.11875" y="225.36" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="78.11875" y="222.588" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_1">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="78.11875" y="247.519375" transform="rotate(-0 78.11875 247.519375)">0</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="78.11875" y="244.747375" transform="rotate(-0 78.11875 244.747375)">0</text>
      </g>
     </g>
     <g id="xtick_2">
      <g id="line2d_2">
       <g>
-       <use xlink:href="#me6267705f3" x="236.780167" y="225.36" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="236.780167" y="222.588" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_2">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="236.780167" y="247.519375" transform="rotate(-0 236.780167 247.519375)">100</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="236.780167" y="244.747375" transform="rotate(-0 236.780167 244.747375)">100</text>
      </g>
     </g>
     <g id="xtick_3">
      <g id="line2d_3">
       <g>
-       <use xlink:href="#me6267705f3" x="395.441585" y="225.36" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="395.441585" y="222.588" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_3">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="395.441585" y="247.519375" transform="rotate(-0 395.441585 247.519375)">200</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="395.441585" y="244.747375" transform="rotate(-0 395.441585 244.747375)">200</text>
      </g>
     </g>
     <g id="xtick_4">
      <g id="line2d_4">
       <g>
-       <use xlink:href="#me6267705f3" x="554.103002" y="225.36" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#me6267705f3" x="554.103002" y="222.588" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_4">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="554.103002" y="247.519375" transform="rotate(-0 554.103002 247.519375)">300</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="554.103002" y="244.747375" transform="rotate(-0 554.103002 244.747375)">300</text>
      </g>
     </g>
     <g id="text_5">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="363.709301" y="269.019375" transform="rotate(-0 363.709301 269.019375)">실제 진행 점수(점)</text>
+     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="363.709301" y="266.247375" transform="rotate(-0 363.709301 266.247375)">실제 진행 점수(점)</text>
     </g>
    </g>
    <g id="matplotlib.axis_2">
@@ -1199,144 +937,396 @@ L -3.5 0
 " style="stroke: #000000; stroke-width: 0.8"/>
       </defs>
       <g>
-       <use xlink:href="#md199876d22" x="78.11875" y="225.36" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#md199876d22" x="78.11875" y="222.588" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_6">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="232.939687" transform="rotate(-0 71.11875 232.939687)">0</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="230.167687" transform="rotate(-0 71.11875 230.167687)">0</text>
      </g>
     </g>
     <g id="ytick_2">
      <g id="line2d_6">
       <g>
-       <use xlink:href="#md199876d22" x="78.11875" y="163.76" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#md199876d22" x="78.11875" y="161.758" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_7">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="171.339687" transform="rotate(-0 71.11875 171.339687)">100</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="169.337687" transform="rotate(-0 71.11875 169.337687)">100</text>
      </g>
     </g>
     <g id="ytick_3">
      <g id="line2d_7">
       <g>
-       <use xlink:href="#md199876d22" x="78.11875" y="102.16" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#md199876d22" x="78.11875" y="100.928" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_8">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="109.739687" transform="rotate(-0 71.11875 109.739687)">200</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="108.507687" transform="rotate(-0 71.11875 108.507687)">200</text>
      </g>
     </g>
     <g id="ytick_4">
      <g id="line2d_8">
       <g>
-       <use xlink:href="#md199876d22" x="78.11875" y="40.56" style="stroke: #000000; stroke-width: 0.8"/>
+       <use xlink:href="#md199876d22" x="78.11875" y="40.098" style="stroke: #000000; stroke-width: 0.8"/>
       </g>
      </g>
      <g id="text_9">
-      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="48.139687" transform="rotate(-0 71.11875 48.139687)">300</text>
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="71.11875" y="47.677687" transform="rotate(-0 71.11875 47.677687)">300</text>
      </g>
     </g>
     <g id="text_10">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="19.08125" y="114.48" transform="rotate(-90 19.08125 114.48)">예측 진행 점수(점)</text>
+     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="19.08125" y="113.094" transform="rotate(-90 19.08125 113.094)">예측 진행 점수(점)</text>
     </g>
    </g>
    <g id="line2d_9">
-    <path d="M 78.11875 225.36 
+    <path d="M 78.11875 222.588 
 L 649.299852 3.6 
-" clip-path="url(#p1080beb4b7)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.4"/>
+" clip-path="url(#p5a59f22b9e)" style="fill: none; stroke-dasharray: 5.6,4.2; stroke-dashoffset: 0; stroke: #000000; stroke-width: 1.4"/>
    </g>
    <g id="patch_3">
-    <path d="M 78.11875 225.36 
+    <path d="M 78.11875 222.588 
 L 78.11875 3.6 
 " style="fill: none; stroke: #000000; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="patch_4">
-    <path d="M 78.11875 225.36 
-L 649.299852 225.36 
+    <path d="M 78.11875 222.588 
+L 649.299852 222.588 
 " style="fill: none; stroke: #000000; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_11">
-    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="93.984892" y="30.16925" transform="rotate(-0 93.984892 30.16925)">점선 위: 실제보다 높게 예측</text>
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="93.984892" y="30.03065" transform="rotate(-0 93.984892 30.03065)">점선 위: 실제보다 높게 예측</text>
    </g>
    <g id="legend_1">
     <g id="PathCollection_3">
-     <path d="M 441.599852 184.6933 
-C 442.709277 184.6933 443.773411 184.252521 444.557892 183.46804 
-C 445.342374 182.683559 445.783152 181.619424 445.783152 180.51 
-C 445.783152 179.400576 445.342374 178.336441 444.557892 177.55196 
-C 443.773411 176.767479 442.709277 176.3267 441.599852 176.3267 
-C 440.490428 176.3267 439.426294 176.767479 438.641812 177.55196 
-C 437.857331 178.336441 437.416552 179.400576 437.416552 180.51 
-C 437.416552 181.619424 437.857331 182.683559 438.641812 183.46804 
-C 439.426294 184.252521 440.490428 184.6933 441.599852 184.6933 
+     <path d="M 441.599852 181.9213 
+C 442.709277 181.9213 443.773411 181.480521 444.557892 180.69604 
+C 445.342374 179.911559 445.783152 178.847424 445.783152 177.738 
+C 445.783152 176.628576 445.342374 175.564441 444.557892 174.77996 
+C 443.773411 173.995479 442.709277 173.5547 441.599852 173.5547 
+C 440.490428 173.5547 439.426294 173.995479 438.641812 174.77996 
+C 437.857331 175.564441 437.416552 176.628576 437.416552 177.738 
+C 437.416552 178.847424 437.857331 179.911559 438.641812 180.69604 
+C 439.426294 181.480521 440.490428 181.9213 441.599852 181.9213 
 z
 " style="fill: #9aa0aa"/>
     </g>
     <g id="text_12">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="465.599852" y="185.76" transform="rotate(-0 465.599852 185.76)">실제 250점 미만 79명</text>
+     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="465.599852" y="182.988" transform="rotate(-0 465.599852 182.988)">실제 250점 미만 79명</text>
     </g>
     <g id="PathCollection_4">
-     <path d="M 441.599852 212.17455 
-C 442.709277 212.17455 443.773411 211.733771 444.557892 210.94929 
-C 445.342374 210.164809 445.783152 209.100674 445.783152 207.99125 
-C 445.783152 206.881826 445.342374 205.817691 444.557892 205.03321 
-C 443.773411 204.248729 442.709277 203.80795 441.599852 203.80795 
-C 440.490428 203.80795 439.426294 204.248729 438.641812 205.03321 
-C 437.857331 205.817691 437.416552 206.881826 437.416552 207.99125 
-C 437.416552 209.100674 437.857331 210.164809 438.641812 210.94929 
-C 439.426294 211.733771 440.490428 212.17455 441.599852 212.17455 
+     <path d="M 441.599852 209.40255 
+C 442.709277 209.40255 443.773411 208.961771 444.557892 208.17729 
+C 445.342374 207.392809 445.783152 206.328674 445.783152 205.21925 
+C 445.783152 204.109826 445.342374 203.045691 444.557892 202.26121 
+C 443.773411 201.476729 442.709277 201.03595 441.599852 201.03595 
+C 440.490428 201.03595 439.426294 201.476729 438.641812 202.26121 
+C 437.857331 203.045691 437.416552 204.109826 437.416552 205.21925 
+C 437.416552 206.328674 437.857331 207.392809 438.641812 208.17729 
+C 439.426294 208.961771 440.490428 209.40255 441.599852 209.40255 
 z
 " style="fill: #1f3d7a"/>
     </g>
     <g id="text_13">
-     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="465.599852" y="213.24125" transform="rotate(-0 465.599852 213.24125)">실제 250점 이상 10명</text>
+     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="465.599852" y="210.46925" transform="rotate(-0 465.599852 210.46925)">실제 250점 이상 10명</text>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p1080beb4b7">
-   <rect x="78.11875" y="3.6" width="571.181102" height="221.76"/>
+  <clipPath id="p5a59f22b9e">
+   <rect x="78.11875" y="3.6" width="571.181102" height="218.988"/>
   </clipPath>
  </defs>
 </svg>
 <!-- /FIG:result --></div>
-        <p class="cap">선형 회귀(bmi + ltg) 예측. 실제 250점 이상인 10명은 모두 점선 아래(낮게 예측)</p>
+        <p class="figcap"><span class="no">그림 2.</span>실제 대 예측 진행 점수(시험 89명). 실제 250점 이상 10명(남색)은 모두 점선 아래로, 실제보다 낮게 예측</p>
+        <div class="fig"><!-- FIG:bars --><svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 759.840477 269.53475" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ 
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 269.53475 
+L 759.840477 269.53475 
+L 759.840477 0 
+L 0 0 
+L 0 269.53475 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 185.059375 219.816 
+L 756.240477 219.816 
+L 756.240477 3.6 
+L 185.059375 3.6 
+L 185.059375 219.816 
+z
+" style="fill: none"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 185.059375 27.564164 
+L 511.481529 27.564164 
+L 511.481529 13.428 
+L 185.059375 13.428 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #4a4f57"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 185.059375 41.700329 
+L 523.933748 41.700329 
+L 523.933748 27.564164 
+L 185.059375 27.564164 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #c4c7cc"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 185.059375 61.221699 
+L 409.391995 61.221699 
+L 409.391995 47.085534 
+L 185.059375 47.085534 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #1f3d7a"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 185.059375 75.357863 
+L 427.489269 75.357863 
+L 427.489269 61.221699 
+L 185.059375 61.221699 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #b4c1db"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 185.059375 94.879233 
+L 413.016103 94.879233 
+L 413.016103 80.743068 
+L 185.059375 80.743068 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #9aa0aa"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 185.059375 109.015397 
+L 390.956755 109.015397 
+L 390.956755 94.879233 
+L 185.059375 94.879233 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #dcdfe3"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 185.059375 128.536767 
+L 413.813876 128.536767 
+L 413.813876 114.400603 
+L 185.059375 114.400603 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #9aa0aa"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 185.059375 142.672932 
+L 399.548759 142.672932 
+L 399.548759 128.536767 
+L 185.059375 128.536767 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #dcdfe3"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 185.059375 162.194301 
+L 409.039004 162.194301 
+L 409.039004 148.058137 
+L 185.059375 148.058137 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #9aa0aa"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 185.059375 176.330466 
+L 283.3691 176.330466 
+L 283.3691 162.194301 
+L 185.059375 162.194301 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #dcdfe3"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 185.059375 195.851836 
+L 443.822749 195.851836 
+L 443.822749 181.715671 
+L 185.059375 181.715671 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #9aa0aa"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 185.059375 209.988 
+L 207.530571 209.988 
+L 207.530571 195.851836 
+L 185.059375 195.851836 
+z
+" clip-path="url(#p42d96d5916)" style="fill: #dcdfe3"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="me6267705f3" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#me6267705f3" x="185.059375" y="219.816" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="185.059375" y="241.975375" transform="rotate(-0 185.059375 241.975375)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#me6267705f3" x="287.056" y="219.816" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="287.056" y="241.975375" transform="rotate(-0 287.056 241.975375)">20</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#me6267705f3" x="389.052626" y="219.816" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="389.052626" y="241.975375" transform="rotate(-0 389.052626 241.975375)">40</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#me6267705f3" x="491.049251" y="219.816" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="491.049251" y="241.975375" transform="rotate(-0 491.049251 241.975375)">60</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#me6267705f3" x="593.045877" y="219.816" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="593.045877" y="241.975375" transform="rotate(-0 593.045877 241.975375)">80</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#me6267705f3" x="695.042502" y="219.816" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="695.042502" y="241.975375" transform="rotate(-0 695.042502 241.975375)">100</text>
+     </g>
+    </g>
+    <g id="text_7">
+     <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="470.649926" y="263.816" transform="rotate(-0 470.649926 263.816)">MAE(점, 작을수록 좋음)</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_7"/>
+     <g id="text_8">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="35.245414" transform="rotate(-0 181.559375 35.245414)">평균 모델(기준선)</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_8"/>
+     <g id="text_9">
+      <text style="font-weight: 700; font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: #1f3d7a" x="181.559375" y="68.902949" transform="rotate(-0 181.559375 68.902949)">선형 회귀(선택)</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_9"/>
+     <g id="text_10">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="102.560483" transform="rotate(-0 181.559375 102.560483)">k-NN 회귀(k=5)</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_10"/>
+     <g id="text_11">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="136.218017" transform="rotate(-0 181.559375 136.218017)">결정 트리 회귀(깊이 4)</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_11"/>
+     <g id="text_12">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="169.875551" transform="rotate(-0 181.559375 169.875551)">랜덤 포레스트 회귀</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_12"/>
+     <g id="text_13">
+      <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="181.559375" y="203.533086" transform="rotate(-0 181.559375 203.533086)">XGBoost 회귀</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_15">
+    <path d="M 185.059375 219.816 
+L 756.240477 219.816 
+" style="fill: none; stroke: #000000; stroke-width: 1.2; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="530.053545" y="34.186039" transform="rotate(-0 530.053545 34.186039)">시험 64.0 · 훈련 66.4</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #1f3d7a" x="433.609066" y="67.843574" transform="rotate(-0 433.609066 67.843574)">시험 44.0 · 훈련 47.5</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="419.1359" y="101.501108" transform="rotate(-0 419.1359 101.501108)">시험 44.7 · 훈련 40.4</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="419.933674" y="135.158642" transform="rotate(-0 419.933674 135.158642)">시험 44.9 · 훈련 42.1</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="415.158801" y="168.816176" transform="rotate(-0 415.158801 168.816176)">시험 43.9 · 훈련 19.3</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 20px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="449.942547" y="202.473711" transform="rotate(-0 449.942547 202.473711)">시험 50.7 · 훈련 4.4</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p42d96d5916">
+   <rect x="185.059375" y="3.6" width="571.181102" height="216.216"/>
+  </clipPath>
+ </defs>
+</svg>
+<!-- /FIG:bars --></div>
+        <p class="figcap"><span class="no">그림 3.</span>모델별 MAE(진한 막대 시험 89명, 옅은 막대 훈련 353명). XGBoost는 훈련·시험 오차 차이가 가장 큼</p>
         <div class="nums">
-          <div><span class="v">44.0점</span><span class="k">선형 회귀 MAE</span></div>
-          <div><span class="v">64.0점</span><span class="k">기준선(평균 모델) MAE</span></div>
+          <div><span class="v">44.0</span><span class="k">선형 회귀 MAE(점)</span></div>
+          <div><span class="v">64.0</span><span class="k">기준선 MAE(점)</span></div>
           <div><span class="v">0.452</span><span class="k">선형 회귀 R²</span></div>
         </div>
-        <!-- 내용 끝 -->
       </section>
 
       <section class="sec">
-        <h2>5. 해석과 결론</h2>
-        <!-- 내용 시작: 해석 3~4문장 · 분석에서 확인한 점 1줄 · 결론 한 문장 -->
-        <ul>
-          <li><b>혈당보다 체질량지수·중성지방이 1년 뒤 진행을 더 잘 알려 줌</b><br>진행 점수와의 상관계수: 혈당 0.38 · 체질량지수 0.59 · 중성지방 0.57</li>
-          <li><b>콜레스테롤은 총량보다 종류에 따라 다름</b><br>총콜레스테롤 상관 0.21 · HDL -0.39, HDL 하위 25% 평균 189.0점 · 상위 25% 107.2점</li>
-          <li><b>급격히 진행한 환자는 검진 수치로 미리 알기 어려움</b><br>실제 250점 이상 시험 환자 10명 모두 낮게 예측(평균 72.4점 낮음), 실제 310점 → 예측 207.4점</li>
+        <h2>5. 논의</h2>
+        <ul class="finds">
+          <li><span class="hl">이 데이터에서는 혈당보다 체질량지수·중성지방이 더 잘 알려 줌</span>진행 점수와의 상관계수: 혈당 <b>0.38</b>, 체질량지수 <b>0.59</b>, 중성지방 <b>0.57</b></li>
+          <li><span class="hl">이 데이터에서는 HDL이 높은 환자의 진행 점수가 낮음</span>HDL 하위 25% 평균 <b>189.0점</b>, 상위 25% <b>107.2점</b></li>
+          <li><span class="hl">이 데이터에서는 급격히 진행한 환자를 미리 알아보기 어려움</span>실제 250점 이상 10명 모두 낮게 예측(열 개 모델 평균 <b>72.4점</b> 낮음)</li>
         </ul>
-        <ul>
-          <li><span class="lb">변수 추가 실험:</span>열 개 모델과 R² 차이 0.0003, 두 수치로 거의 같은 설명력</li>
-        </ul>
-        <p class="final">이 데이터에서 1년 뒤 진행은 체질량지수와 중성지방으로 어느 정도 예측되지만, 설명력은 절반에 못 미치고 급격한 진행은 놓침</p>
-        <!-- 내용 끝 -->
       </section>
 
       <section class="sec">
-        <h2>6. 한계와 향후 연구</h2>
-        <!-- 내용 시작: 한계 3줄(수치) · 오용 주의 1줄 · 더 해 보고 싶은 것 2줄 · 배운 점 1줄 -->
+        <h2>6. 결론과 한계</h2>
+        <p class="final">이 데이터에서 체질량지수와 중성지방으로 1년 뒤 진행을 어느 정도 예측할 수 있으나, 진행 정도 차이의 절반에 못 미침</p>
         <ul>
-          <li>열 개를 모두 넣어도 진행 점수 차이의 약 <b>55%</b>는 설명하지 못함</li>
-          <li>예측 206.5점·206.6점으로 거의 같은 두 환자의 실제 점수는 <b>52점·297점</b></li>
-          <li><span class="lb">오용 주의:</span>개인의 병 진행 예측이나 치료 결정에 사용하면 안 됨</li>
-          <li><span class="lb">더 해 볼 것:</span>생활 습관 열이 있는 데이터, 시험 데이터를 여러 번 나눈 평가</li>
-          <li><span class="lb">교과·진로:</span>생명과학(혈당·지질 대사)·화학·체육 · 임상병리사·의학 연구·보건 데이터 분석</li>
-          <li><span class="lb">배운 점:</span>"관계없다"와 "더 보태는 설명력이 작다"는 다른 주장임</li>
+          <li>442명 한 연구 집단 · 시험 데이터 한 번만 나눔(교차검증 미실시)</li>
+          <li>sex의 뜻·측정 단위·진행 점수 산정 방법이 출처에 없음</li>
+          <li>개인의 진행 예측이나 치료 결정에 사용 불가</li>
+          <li><span class="lb">향후 연구:</span>생활 습관 열이 있는 데이터 · k겹 교차검증</li>
         </ul>
-        <!-- 내용 끝 -->
       </section>
     </div>
   </div>
@@ -1344,16 +1334,16 @@ z
   <!-- ════════ 발치 ════════ -->
   <footer class="foot">
     <div>
-      <!-- 내용 시작: 데이터 출처 · 재계산 안내 · 저장소·앱 주소 -->
-      데이터: Efron, Hastie, Johnstone, Tibshirani (2004). Least Angle Regression. The Annals of Statistics, 32(2), 407–499<br>
-      원자료 www4.stat.ncsu.edu/~boos/var.select/diabetes.html · 참고: 데이터 출처·소프트웨어는 README 참고문헌<br>
-      저장소 github.com/greatsong/ds-sample-5-biochem · 앱 greatsong.github.io/ds-sample-5-biochem · 수치는 code/check.py로 재계산 가능
-      <!-- 내용 끝 -->
+      <span class="ref-lab">참고문헌</span>[1] Efron, B., Hastie, T., Johnstone, I., &amp; Tibshirani, R. (2004). Least Angle Regression. <i>The Annals of Statistics</i>, 32(2), 407–499. 데이터 www4.stat.ncsu.edu/~boos/var.select/diabetes.html, 2026-10-15 접근 · 원래 척도 사본 scikit-learn load_diabetes(scaled=False)(BSD-3)<br>
+      [2] 소프트웨어: Python 3.11, pandas 2.3.3, NumPy 1.26.4, scikit-learn 1.8.0, xgboost 3.2.0, Streamlit 1.53.1, matplotlib 3.10.8 · Claude Fable 5.1(Anthropic)<br>
+      <span class="ref-lab">생성형 AI 활용:</span>Claude Fable 5.1(Anthropic)로 코드 작성·해석 반론 요청·문구 다듬기, 주제 선정·해석·결론은 팀이 작성<br>
+      모든 수치는 code/check.py로 다시 계산할 수 있음 · 저장소 github.com/greatsong/ds-sample-5-biochem · 앱 greatsong.github.io/ds-sample-5-biochem
     </div>
     <div class="qr"><!-- FIG:qr_app --><svg role="img" aria-label="https://greatsong.github.io/ds-sample-5-biochem/" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" shape-rendering="crispEdges" class="segno"><path class="qrline" stroke="#000" d="M2 2.5h7m5 0h1m1 0h1m1 0h1m1 0h3m1 0h2m2 0h7m-33 1h1m5 0h1m8 0h1m2 0h1m2 0h1m2 0h1m1 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m1 0h5m1 0h3m3 0h2m4 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h4m2 0h2m1 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h3m2 0h1m4 0h2m6 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h1m1 0h5m3 0h1m1 0h2m3 0h1m1 0h2m1 0h1m3 0h5m-27 1h2m1 0h1m3 0h1m1 0h1m2 0h2m1 0h3m1 0h1m2 0h2m1 0h2m1 0h1m-33 1h1m1 0h2m1 0h4m1 0h8m2 0h3m2 0h1m2 0h1m1 0h2m-32 1h1m9 0h1m1 0h2m2 0h3m2 0h2m1 0h2m2 0h4m-31 1h2m1 0h1m1 0h2m2 0h2m2 0h1m1 0h1m2 0h2m1 0h1m1 0h1m3 0h2m-27 1h3m2 0h6m1 0h1m2 0h1m4 0h1m2 0h2m1 0h1m1 0h2m-33 1h9m2 0h1m1 0h4m3 0h1m1 0h1m2 0h2m2 0h3m-32 1h1m1 0h3m2 0h2m1 0h1m4 0h1m5 0h3m1 0h2m1 0h3m-30 1h1m2 0h7m1 0h1m2 0h1m1 0h1m4 0h4m1 0h3m2 0h1m-33 1h1m1 0h2m1 0h1m1 0h3m1 0h3m4 0h3m2 0h1m2 0h2m1 0h2m1 0h1m-33 1h1m2 0h1m1 0h2m4 0h3m1 0h2m1 0h1m1 0h3m2 0h4m1 0h2m-29 1h1m1 0h1m4 0h1m2 0h1m2 0h1m2 0h4m2 0h1m1 0h6m-33 1h5m1 0h2m1 0h3m2 0h1m3 0h1m5 0h2m1 0h3m-30 1h1m2 0h3m2 0h1m2 0h2m2 0h2m3 0h1m2 0h1m2 0h2m2 0h1m1 0h1m-33 1h1m1 0h7m1 0h2m1 0h2m2 0h3m2 0h1m2 0h1m4 0h2m-32 1h1m1 0h4m7 0h2m1 0h1m1 0h4m2 0h3m2 0h2m-31 1h1m1 0h1m3 0h6m1 0h1m3 0h3m2 0h7m-21 1h2m1 0h2m3 0h5m3 0h1m3 0h1m1 0h3m-33 1h7m2 0h2m1 0h2m1 0h3m4 0h3m1 0h1m1 0h1m1 0h2m-32 1h1m5 0h1m1 0h1m2 0h1m2 0h2m1 0h8m3 0h4m-32 1h1m1 0h3m1 0h1m1 0h4m2 0h1m1 0h1m2 0h1m1 0h1m2 0h6m1 0h2m-33 1h1m1 0h3m1 0h1m1 0h1m3 0h2m1 0h1m1 0h2m2 0h1m3 0h1m2 0h2m1 0h2m-33 1h1m1 0h3m1 0h1m1 0h2m2 0h6m4 0h1m1 0h4m2 0h1m-31 1h1m5 0h1m2 0h1m5 0h1m2 0h1m2 0h2m5 0h3m-31 1h7m1 0h3m3 0h2m1 0h1m5 0h2m1 0h2m3 0h1"/></svg>
 <!-- /FIG:qr_app --><div>앱</div></div>
   </footer>
 </main>
+
 </div>
 <script>
   // 화면에서는 창 폭에 맞춰 줄인다. 인쇄할 때는 @media print가 원 크기로 되돌린다
