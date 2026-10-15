@@ -162,3 +162,42 @@ best_r2 = max(scores, key=lambda r: r[2])
 lin = scores[0]
 print(f"MAE가 가장 작은 모델: {best_mae[0]} ({best_mae[1]:.2f}), 선형 회귀 {lin[1]:.2f}, 차이 {lin[1] - best_mae[1]:.2f}점")
 print(f"R²가 가장 높은 모델: {best_r2[0]} ({best_r2[2]:.3f})")
+
+print("\n== 10. 인사이트 (우리 팀이 찾아낸 것) ==")
+print("[인사이트 1] 혈당 하나 대 체질량지수·중성지방 (선형 회귀, 같은 분할)")
+single = {}
+for c in ["glu", "bmi", "ltg", "hdl", "tc", "ldl"]:
+    p = LinearRegression().fit(train[[c]], train["progression"]).predict(test[[c]])
+    single[c] = (r2_score(y, p), mean_absolute_error(y, p))
+    print(f"  {c} 하나: R² {single[c][0]:.3f}, MAE {single[c][1]:.1f}")
+p_glu3 = LinearRegression().fit(train[["bmi", "ltg", "glu"]], train["progression"]).predict(test[["bmi", "ltg", "glu"]])
+print(f"  bmi + ltg에 glu를 더하면 R² {r_two:.3f} → {r2_score(y, p_glu3):.3f}")
+print(f"  progression과의 상관계수: glu {corr['glu']:+.2f}, bmi {corr['bmi']:+.2f}, ltg {corr['ltg']:+.2f}")
+for c in ["glu", "bmi", "ltg"]:
+    q1, q3 = df[c].quantile([0.25, 0.75])
+    lo_m = df[df[c] <= q1]["progression"].mean()
+    hi_m = df[df[c] >= q3]["progression"].mean()
+    print(f"  {c} 하위 25% 평균 진행 {lo_m:.1f}, 상위 25% {hi_m:.1f}, 차이 {hi_m - lo_m:.1f}점")
+
+print("[인사이트 2] 콜레스테롤: 총량·LDL 대 HDL")
+p_tl = LinearRegression().fit(train[["tc", "ldl"]], train["progression"]).predict(test[["tc", "ldl"]])
+print(f"  tc + ldl 두 개 모델: R² {r2_score(y, p_tl):.3f}")
+p_4 = LinearRegression().fit(train[["bmi", "ltg", "tc", "ldl"]], train["progression"]).predict(test[["bmi", "ltg", "tc", "ldl"]])
+print(f"  bmi + ltg에 tc·ldl을 더하면 R² {r_two:.3f} → {r2_score(y, p_4):.3f} (변화 {r2_score(y, p_4) - r_two:+.3f})")
+hq1, hq3 = df["hdl"].quantile([0.25, 0.75])
+hlo = df[df["hdl"] <= hq1]
+hhi = df[df["hdl"] >= hq3]
+print(f"  hdl 하위 25%(≤{hq1:.1f}) {len(hlo)}명: 평균 진행 {hlo['progression'].mean():.1f}, 250 이상 {(hlo['progression'] >= 250).mean() * 100:.0f}%, "
+      f"평균 bmi {hlo['bmi'].mean():.1f}, 평균 ltg {hlo['ltg'].mean():.2f}")
+print(f"  hdl 상위 25%(≥{hq3:.1f}) {len(hhi)}명: 평균 진행 {hhi['progression'].mean():.1f}, 250 이상 {(hhi['progression'] >= 250).mean() * 100:.0f}%, "
+      f"평균 bmi {hhi['bmi'].mean():.1f}, 평균 ltg {hhi['ltg'].mean():.2f}")
+print(f"  두 집단 평균 진행 차이: {hlo['progression'].mean() - hhi['progression'].mean():.1f}점")
+p_h = LinearRegression().fit(train[["bmi", "ltg", "hdl"]], train["progression"]).predict(test[["bmi", "ltg", "hdl"]])
+print(f"  bmi + ltg에 hdl을 더하면 R² {r_two:.3f} → {r2_score(y, p_h):.3f}")
+
+print("[인사이트 3] 급격히 진행한 환자 (열 개 전부 모델, 시험 데이터 250 이상)")
+print(f"  {len(hi)}명 중 낮게 예측 {(hi['err'] < 0).sum()}명, 평균 {-hi['err'].mean():.1f}점 낮음")
+for _, r in hi.sort_values("progression").iterrows():
+    print(f"  실제 {r['progression']:.0f} → 예측 {r['pred']:.1f} (bmi {r['bmi']:.1f}, ltg {r['ltg']:.2f}, glu {r['glu']:.0f})")
+rest = t[t["progression"] < 250]
+print(f"  250 이상 평균 bmi {hi['bmi'].mean():.1f}, 나머지 {len(rest)}명 평균 bmi {rest['bmi'].mean():.1f}")

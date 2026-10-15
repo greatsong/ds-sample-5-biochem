@@ -107,7 +107,7 @@
 
 <!-- 1 제목 -->
 <section class="slide chapter">
-  <div class="kicker">1 / 16 · 제목</div>
+  <div class="kicker">1 / 17 · 제목</div>
   <h1>혈액 생화학 수치와 체질량지수로<br>1년 뒤 당뇨 진행 정도를 예측할 수 있는가</h1>
   <p class="sub">검진표연구소 · 10101 홍길동 · 10102 김영희 · 10103 이철수</p>
   <p class="small">선생님이 만든 가상 팀의 샘플 · 데이터와 수치는 실제 계산값</p>
@@ -115,7 +115,7 @@
 
 <!-- 2 데이터셋 -->
 <section class="slide">
-  <div class="kicker">2 / 16 · 우리 팀의 데이터셋</div>
+  <div class="kicker">2 / 17 · 우리 팀의 데이터셋</div>
   <h2>우리 팀의 데이터셋</h2>
   <div class="withimg">
     <ul class="facts txt small-facts">
@@ -130,7 +130,7 @@
 
 <!-- 3 선택 이유 -->
 <section class="slide">
-  <div class="kicker">3 / 16 · 이 문제를 선택한 이유</div>
+  <div class="kicker">3 / 17 · 이 문제를 선택한 이유</div>
   <h2>이 문제를 선택한 이유</h2>
   <ul class="facts">
     <li>생명과학 시간의 혈당 · 인슐린 · 지질 대사</li>
@@ -142,7 +142,7 @@
 
 <!-- 4 과정 -->
 <section class="slide">
-  <div class="kicker">4 / 16 · 어떤 과정으로 분석했는지</div>
+  <div class="kicker">4 / 17 · 어떤 과정으로 분석했는지</div>
   <h2>어떤 과정으로 분석했는지</h2>
   <ul class="facts">
     <li>데이터 판정, 선생님 승인 (3차시)</li>
@@ -155,7 +155,7 @@
 
 <!-- 5 고려한 모델 -->
 <section class="slide">
-  <div class="kicker">5 / 16 · 어떤 모델을 고려했는지</div>
+  <div class="kicker">5 / 17 · 어떤 모델을 고려했는지</div>
   <h2>어떤 모델을 고려했는지</h2>
   <table class="mini">
     <tr><th>모델</th><th>시험 MAE</th><th>시험 R²</th><th>훈련 MAE</th></tr>
@@ -171,7 +171,7 @@
 
 <!-- 6 선택 이유 -->
 <section class="slide">
-  <div class="kicker">6 / 16 · 왜 이 모델을 선택했는지</div>
+  <div class="kicker">6 / 17 · 왜 이 모델을 선택했는지</div>
   <h2>왜 이 모델을 선택했는지</h2>
   <ul class="facts">
     <li>선형 회귀: R² <b>0.452</b>, 다섯 모델 중 최고</li>
@@ -184,7 +184,7 @@
 
 <!-- 7 평가지표 -->
 <section class="slide">
-  <div class="kicker">7 / 16 · 우리가 사용한 평가지표</div>
+  <div class="kicker">7 / 17 · 우리가 사용한 평가지표</div>
   <h2>우리가 사용한 평가지표</h2>
   <ul class="facts">
     <li>MAE: 예측 점수가 실제 점수에서 평균 몇 점 빗나가나</li>
@@ -197,7 +197,7 @@
 
 <!-- 8 결정 -->
 <section class="slide">
-  <div class="kicker">8 / 16 · 모델링 과정에서 우리 팀이 결정한 것</div>
+  <div class="kicker">8 / 17 · 모델링 과정에서 우리 팀이 결정한 것</div>
   <h2>모델링 과정에서 우리 팀이 결정한 것</h2>
   <ul class="facts">
     <li>진행 점수 250 이상 <b>65명</b>도 실제 환자라 유지</li>
@@ -210,23 +210,35 @@
 
 <!-- 9 해석 -->
 <section class="slide">
-  <div class="kicker">9 / 16 · 최종 분석 결과에 대한 우리 팀의 해석</div>
+  <div class="kicker">9 / 17 · 최종 분석 결과에 대한 우리 팀의 해석</div>
   <h2>최종 분석 결과에 대한 우리 팀의 해석</h2>
   <div class="withimg">
     <div class="diagram plot"><div class="chart" id="g9"></div></div>
     <ul class="facts txt small-facts">
-      <li>두 변수 R² <b>0.452</b>, 열 개 <b>0.453</b></li>
-      <li>MAE: 기준선보다 <b>31%</b> 감소</li>
-      <li>진행 점수 차이의 절반 미만만 설명</li>
-      <li>결론: 설명력은 대부분 체질량지수와 중성지방</li>
+      <li><b>혈당보다 체질량지수·중성지방</b><br><span class="small">상관 0.38 대 0.59 · 0.57</span></li>
+      <li><b>콜레스테롤은 총량보다 종류</b><br><span class="small">HDL 하위 25% 189.0점 · 상위 25% 107.2점</span></li>
+      <li><b>급격한 진행은 낮게 예측</b><br><span class="small">250 이상 10명 모두 낮게, 평균 72.4점</span></li>
     </ul>
   </div>
-  <p class="small">약점: 실제 250 이상 환자 10명 모두 낮게 예측, 평균 72.4점 낮음 (열 개 모델)</p>
+  <p class="small">결론: 두 변수 R² 0.452 · 열 개 0.453, 이 데이터에서 설명력은 대부분 체질량지수와 중성지방</p>
 </section>
 
-<!-- 10 추가 연구 -->
+<!-- 10 찾아낸 것 -->
 <section class="slide">
-  <div class="kicker">10 / 16 · 이후 추가로 연구한다면</div>
+  <div class="kicker">10 / 17 · 우리 팀이 찾아낸 것</div>
+  <h2>우리 팀이 찾아낸 것</h2>
+  <table class="mini">
+    <tr><th>처음 생각</th><th>이 데이터에서는</th></tr>
+    <tr><td>당뇨니까 혈당이 가장 중요</td><td>상·하위 25% 차이: 혈당 <b>83.9</b> · 체질량지수 <b>106.7</b> · 중성지방 <b>115.5</b></td></tr>
+    <tr><td>콜레스테롤이 높으면 진행도 빠름</td><td>총콜레스테롤 상관 <b>0.21</b> · HDL <b>-0.39</b>, 250 이상 비율 <b>23%</b> 대 <b>5%</b></td></tr>
+    <tr><td>MAE 44.0점, 모두 비슷하게 맞힘</td><td>250 이상 10명 모두 낮게 · 실제 310 → 예측 <b>207.4</b>점</td></tr>
+  </table>
+  <p class="small">원인이 아니라 예측에 대한 발견 · 의학적 판단에 사용 금지</p>
+</section>
+
+<!-- 11 추가 연구 -->
+<section class="slide">
+  <div class="kicker">11 / 17 · 이후 추가로 연구한다면</div>
   <h2>이후 추가로 연구한다면 더 해 보고 싶은 것</h2>
   <table class="mini">
     <tr><th>구분</th><th>키워드</th></tr>
@@ -236,9 +248,9 @@
   </table>
 </section>
 
-<!-- 11 느낀 점 -->
+<!-- 12 느낀 점 -->
 <section class="slide">
-  <div class="kicker">11 / 16 · 느끼고 배운 점</div>
+  <div class="kicker">12 / 17 · 느끼고 배운 점</div>
   <h2>AI를 활용하고 데이터를 분석하며 느끼고 배운 점</h2>
   <ul class="facts small-facts">
     <li>홍길동: "이름이 유명한 모델이 우리 데이터에서도 가장 좋은 건 아니었다."</li>
@@ -248,9 +260,9 @@
   <p class="point">AI 활용에서 배운 것: <b>계수 크기는 단위부터 확인</b> · <b>비교는 같은 분할에서</b></p>
 </section>
 
-<!-- 12~15 2부 · 모델 소개 (3분 발표) -->
+<!-- 13~16 2부 · 모델 소개 (3분 발표) -->
 <section class="slide">
-  <div class="kicker">12 / 16 · 모델 소개 · 우리가 선택한 모델</div>
+  <div class="kicker">13 / 17 · 모델 소개 · 우리가 선택한 모델</div>
   <h2>우리가 선택한 모델: 선형 회귀</h2>
   <ul class="facts small-facts">
     <li>원리: 오차가 가장 작아지는 직선(입력 둘이면 평면)을 찾음</li>
@@ -262,7 +274,7 @@
 </section>
 
 <section class="slide">
-  <div class="kicker">13 / 16 · 모델 소개 · 비교 모델 1</div>
+  <div class="kicker">14 / 17 · 모델 소개 · 비교 모델 1</div>
   <h2>비교 모델 1: 랜덤 포레스트 회귀(300그루)</h2>
   <ul class="facts small-facts">
     <li>원리: 데이터를 조금씩 다르게 뽑아 만든 트리 여러 개의 예측을 평균</li>
@@ -274,7 +286,7 @@
 </section>
 
 <section class="slide">
-  <div class="kicker">14 / 16 · 모델 소개 · 비교 모델 2</div>
+  <div class="kicker">15 / 17 · 모델 소개 · 비교 모델 2</div>
   <h2>비교 모델 2: XGBoost 회귀(기본값)</h2>
   <ul class="facts small-facts">
     <li>원리: 작은 트리를 차례로 보탬, 다음 트리가 앞 트리의 오차를 줄임</li>
@@ -286,7 +298,7 @@
 </section>
 
 <section class="slide">
-  <div class="kicker">15 / 16 · 모델 소개 · 세 모델 비교 요약</div>
+  <div class="kicker">16 / 17 · 모델 소개 · 세 모델 비교 요약</div>
   <h2>세 모델 비교 요약</h2>
   <table class="mini cmp">
     <tr><th>모델</th><th>원리</th><th>장점</th><th>단점</th><th>적합한 상황</th><th>우리 데이터</th></tr>
@@ -298,9 +310,9 @@
   <p class="point">우리 데이터에는 <b>선형 회귀</b>: MAE 차이 <b>0.07점</b>, R² 최고, 계수 해석</p>
 </section>
 
-<!-- 16 마무리 -->
+<!-- 17 마무리 -->
 <section class="slide chapter">
-  <div class="kicker">16 / 16 · 마무리</div>
+  <div class="kicker">17 / 17 · 마무리</div>
   <h1>감사합니다</h1>
   <p class="sub">질문 받겠습니다</p>
   <p class="small">검진표연구소 · 홍길동 · 김영희 · 이철수</p>
@@ -340,12 +352,12 @@
     if (id === 'g9') {
       const lay = base('시험 데이터 R²', '');
       lay.title = { text: '변수 묶음별 R² (선형 회귀)', font: { size: 17 } };
-      lay.margin.l = 120; lay.margin.r = 70;
+      lay.margin.l = 150; lay.margin.r = 70;
       lay.xaxis.range = [-0.05, 0.6]; lay.xaxis.tickformat = '.1f';
       lay.yaxis = { autorange: 'reversed' };
       const r2 = [-0.012, 0.233, 0.452, 0.453];
-      Plotly.newPlot('g9', [{ type: 'bar', orientation: 'h', y: ['평균 모델', 'bmi 하나', 'bmi + ltg', '열 개 전부'], x: r2,
-        text: r2.map(v => v.toFixed(3)), textposition: 'outside', cliponaxis: false,
+      Plotly.newPlot('g9', [{ type: 'bar', orientation: 'h', y: ['평균 모델 (-0.012)', 'bmi 하나', 'bmi + ltg', '열 개 전부'], x: r2,
+        text: r2.map(v => v.toFixed(3)), textposition: r2.map(v => v < 0 ? 'none' : 'outside'), cliponaxis: false,
         marker: { color: ['#9aa0ad', '#9aa0ad', '#2b7fd6', '#9aa0ad'] } }], lay, { staticPlot: true, responsive: true });
     }
   }
