@@ -135,14 +135,14 @@
 - 10103 이철수: "관계없다"와 "더 보태는 게 작다"는 비슷해 보이지만 완전히 다른 주장이었다. 앱이 그럴듯해 보일수록 잘못 쓰일 수 있어서 경고 한 줄이 꼭 필요하다고 느꼈다.
 
 ## 생성형 AI 활용 명시
-- 사용한 도구: 대화형 AI 도구(수업에서 허용한 것)
+- 사용한 AI 모델: Claude Fable 5.1(Anthropic). 이 샘플은 선생님이 이 모델로 만들었습니다. 실제 팀은 사용한 모델 이름과 버전(예: ChatGPT GPT-5, Gemini 2.5, Claude 등)을 그대로 적습니다.
 - 사용한 곳: 분석 코드와 앱 코드 작성, 우리 해석에 대한 반론 요청, 문구 다듬기
 - 사용하지 않은 곳: 주제 선정 이유, 결과 해석, 결론. 이 부분은 팀이 직접 썼습니다.
 - 검증 방법: 모든 수치는 `code/check.py`로 다시 계산해 확인했습니다. AI의 제안을 받아들이지 않은 기록은 `log/`에 있습니다.
 
 ## 참고문헌
 1. Efron, B., Hastie, T., Johnstone, I., & Tibshirani, R. (2004). Least Angle Regression. *The Annals of Statistics*, 32(2), 407–499. 데이터: https://www4.stat.ncsu.edu/~boos/var.select/diabetes.html (2026-10-15 접근). 원래 척도 사본은 scikit-learn `load_diabetes(scaled=False)`(BSD-3).
-2. 소프트웨어: Python 3.11, pandas 2.3.3, numpy 1.26.4, scikit-learn 1.8.0, plotly 6.6.0, Streamlit 1.53.1, xgboost 3.2.0, stlite 1.4.0
+2. 소프트웨어: Python 3.11, pandas 2.3.3, numpy 1.26.4, scikit-learn 1.8.0, plotly 6.6.0, Streamlit 1.53.1, xgboost 3.2.0, stlite 1.4.0 · 생성형 AI: Claude Fable 5.1(Anthropic)
 3. 『데이터 과학』, 2022 개정 교육과정 고등학교 교과서
 
 ## 실행 방법
