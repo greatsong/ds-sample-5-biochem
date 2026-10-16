@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>검진표연구소 발표 · 당뇨 진행 예측</title>
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
@@ -111,172 +110,9 @@
 <body>
 
 <!-- 1 제목 -->
-<section class="slide chapter">
-  <div class="kicker">1 / 17 · 제목</div>
-  <h1>혈액 생화학 수치와 체질량지수로<br>1년 뒤 당뇨 진행 정도를 예측할 수 있는가</h1>
-  <p class="sub">검진표연구소 · 20209 배소율 · 20216 신동혁 · 20225 문가은</p>
-  <p class="small">선생님이 만든 가상 팀의 샘플 · 데이터와 수치는 실제 계산값</p>
-</section>
-
-<!-- 2 데이터셋 -->
+<!-- 모델 소개 4장 (연계 수행평가, 3분 발표). 교사 결정 2026-10-16: 프로젝트 1부 12장은 제출물에서 뺌 -->
 <section class="slide">
-  <div class="kicker">2 / 17 · 우리 팀의 데이터셋</div>
-  <h2>우리 팀의 데이터셋</h2>
-  <div class="withimg">
-    <ul class="facts txt small-facts">
-      <li>당뇨 환자의 기준 시점 측정값 (Efron 외, 2004)</li>
-      <li><b>442명 · 11개 열</b>, 결측값 <b>0개</b></li>
-      <li>입력: 체질량지수 · 혈압 · 혈액 검사 6개 등 10개</li>
-      <li>예측할 값: 1년 뒤 진행 점수 <b>25~346</b></li>
-    </ul>
-    <div class="diagram plot"><div class="chart" id="g2"></div></div>
-  </div>
-</section>
-
-<!-- 3 선택 이유 -->
-<section class="slide">
-  <div class="kicker">3 / 17 · 이 문제를 선택한 이유</div>
-  <h2>이 문제를 선택한 이유</h2>
-  <ul class="facts">
-    <li>생명과학 시간의 혈당 · 인슐린 · 지질 대사</li>
-    <li>검진표의 많은 숫자, 몇 개만 봐도 될까</li>
-    <li>진행 점수와의 상관계수: 혈당 <b>0.38</b>, 체질량지수 <b>0.59</b>, 중성지방 <b>0.57</b></li>
-    <li>"걸린다 · 안 걸린다"가 아닌 진행 정도를 숫자로</li>
-  </ul>
-</section>
-
-<!-- 4 과정 -->
-<section class="slide">
-  <div class="kicker">4 / 17 · 어떤 과정으로 분석했는지</div>
-  <h2>어떤 과정으로 분석했는지</h2>
-  <div class="steps">
-    <ol>
-      <li><span class="n">1</span><b>수집</b> Efron 외(2004) · 442명 · 11열</li>
-      <li><span class="n">2</span><b>변수 선택</b> 정답 진행 점수 · 입력 bmi + ltg</li>
-      <li><span class="n">3</span><b>전처리</b> 결측 0 · 250 이상 65명 유지</li>
-      <li><span class="n">4</span><b>분할</b> 훈련 353 · 시험 89 · 난수 42</li>
-      <li><span class="n">5</span><b>기준선</b> 평균 모델 MAE 64.0점</li>
-    </ol>
-    <ol>
-      <li><span class="n">6</span><b>후보 비교</b> 5종 · 같은 입력 · 같은 분할</li>
-      <li><span class="n">7</span><b>선택</b> MAE 차이 0.07점 · 계수 해석</li>
-      <li><span class="n">8</span><b>평가</b> MAE · R² · 훈련과 시험 차이</li>
-      <li><span class="n">9</span><b>해석</b> 상관계수 · 상하위 25% · 구간별 예측 오차(잔차)</li>
-      <li><span class="n">10</span><b>한계 점검</b> 교차검증 없음 · 한 연구 집단</li>
-    </ol>
-  </div>
-</section>
-
-<!-- 5 고려한 모델 -->
-<section class="slide">
-  <div class="kicker">5 / 17 · 어떤 모델을 고려했는지</div>
-  <h2>어떤 모델을 고려했는지</h2>
-  <table class="mini">
-    <tr><th>모델</th><th>시험 MAE</th><th>시험 R²</th><th>훈련 MAE</th></tr>
-    <tr><td>평균 모델(기준선)</td><td>64.0점</td><td>-0.012</td><td>66.4점</td></tr>
-    <tr><td>선형 회귀</td><td><em>44.0점</em></td><td><em>0.452</em></td><td>47.5점</td></tr>
-    <tr><td>k-NN 회귀(k=5)</td><td>44.7점</td><td>0.379</td><td>40.4점</td></tr>
-    <tr><td>결정 트리 회귀(깊이 4)</td><td>44.9점</td><td>0.436</td><td>42.1점</td></tr>
-    <tr><td>랜덤 포레스트 회귀(300그루)</td><td>43.9점</td><td>0.420</td><td>19.3점</td></tr>
-    <tr><td>XGBoost 회귀(기본값)</td><td>50.7점</td><td>0.196</td><td>4.4점</td></tr>
-  </table>
-  <p class="small">입력: 체질량지수 + 중성지방 로그값 · 같은 분할(훈련 353명 · 시험 89명)</p>
-</section>
-
-<!-- 6 선택 이유 -->
-<section class="slide">
-  <div class="kicker">6 / 17 · 왜 이 모델을 선택했는지</div>
-  <h2>왜 이 모델을 선택했는지</h2>
-  <ul class="facts">
-    <li>선형 회귀: R² <b>0.452</b>, 다섯 모델 중 최고</li>
-    <li>MAE 최소는 랜덤 포레스트 <b>43.9점</b>, 차이 <b>0.07점</b></li>
-    <li>계수로 읽는 영향: bmi 1당 <b>7.9점</b> · ltg 1당 <b>51.3점</b></li>
-    <li>수업에서 배운 모델, 발표에서 설명 가능</li>
-    <li>XGBoost: 훈련 <b>4.4점</b> · 시험 <b>50.7점</b>, 훈련 데이터 암기</li>
-  </ul>
-</section>
-
-<!-- 7 평가지표 -->
-<section class="slide">
-  <div class="kicker">7 / 17 · 우리가 사용한 평가지표</div>
-  <h2>우리가 사용한 평가지표</h2>
-  <ul class="facts">
-    <li>MAE: 예측 점수가 실제 점수에서 평균 몇 점 빗나가나</li>
-    <li>R²: 평균 모델보다 오차를 얼마나 줄였나 (1에 가까울수록 좋음)</li>
-    <li>우리 모델: MAE <b>44.0점</b>, R² <b>0.452</b></li>
-    <li>기준선(평균 모델): MAE <b>64.0점</b>, R² <b>-0.012</b></li>
-    <li>MAE를 중심으로: 진행 점수 단위 그대로라 설명이 쉬움</li>
-  </ul>
-</section>
-
-<!-- 8 결정 -->
-<section class="slide">
-  <div class="kicker">8 / 17 · 모델링 과정에서 우리 팀이 결정한 것</div>
-  <h2>모델링 과정에서 우리 팀이 결정한 것</h2>
-  <ul class="facts">
-    <li>진행 점수 250 이상 <b>65명</b>도 실제 환자라 유지</li>
-    <li>sex 부호에 뜻 붙이지 않음, ltg는 로그값 그대로</li>
-    <li>계수 크기로 중요도 순위 매기지 않음: 변수마다 단위가 다름</li>
-    <li>R²: bmi 하나 <b>0.233</b> → bmi + ltg <b>0.452</b> → 열 개 <b>0.453</b></li>
-    <li>최종 변수: 체질량지수 + 중성지방 로그값</li>
-  </ul>
-</section>
-
-<!-- 9 해석 -->
-<section class="slide">
-  <div class="kicker">9 / 17 · 최종 분석 결과에 대한 우리 팀의 해석</div>
-  <h2>최종 분석 결과에 대한 우리 팀의 해석</h2>
-  <div class="withimg">
-    <div class="diagram plot"><div class="chart" id="g9"></div></div>
-    <ul class="facts txt small-facts">
-      <li><b>혈당보다 체질량지수·중성지방</b><br><span class="small">상관 0.38 대 0.59 · 0.57</span></li>
-      <li><b>콜레스테롤은 총량보다 종류</b><br><span class="small">HDL 하위 25% 189.0점 · 상위 25% 107.2점</span></li>
-      <li><b>급격한 진행은 낮게 예측</b><br><span class="small">250 이상 10명 모두 낮게, 평균 72.4점</span></li>
-    </ul>
-  </div>
-  <p class="small">결론: 두 변수 R² 0.452 · 열 개 0.453, 이 데이터에서 설명력은 대부분 체질량지수와 중성지방</p>
-</section>
-
-<!-- 10 찾아낸 것 -->
-<section class="slide">
-  <div class="kicker">10 / 17 · 우리 팀이 찾아낸 것</div>
-  <h2>우리 팀이 찾아낸 것</h2>
-  <table class="mini">
-    <tr><th>처음 생각</th><th>이 데이터에서는</th></tr>
-    <tr><td>당뇨니까 혈당이 가장 중요</td><td>상·하위 25% 차이: 혈당 <b>83.9</b> · 체질량지수 <b>106.7</b> · 중성지방 <b>115.5</b></td></tr>
-    <tr><td>콜레스테롤이 높으면 진행도 빠름</td><td>총콜레스테롤 상관 <b>0.21</b> · HDL <b>-0.39</b>, 250 이상 비율 <b>23%</b> 대 <b>5%</b></td></tr>
-    <tr><td>MAE 44.0점, 모두 비슷하게 맞힘</td><td>250 이상 10명 모두 낮게 · 실제 310 → 예측 <b>207.4</b>점</td></tr>
-  </table>
-  <p class="small">원인이 아니라 예측에 대한 발견 · 의학적 판단에 사용 금지</p>
-</section>
-
-<!-- 11 추가 연구 -->
-<section class="slide">
-  <div class="kicker">11 / 17 · 이후 추가로 연구한다면</div>
-  <h2>이후 추가로 연구한다면 더 해 보고 싶은 것</h2>
-  <table class="mini">
-    <tr><th>구분</th><th>키워드</th></tr>
-    <tr><td>더 해 볼 분석</td><td>생활 습관 열 추가, 여러 번 나눈 평가, 진행이 많이 된 환자 예측</td></tr>
-    <tr><td>교과 연계</td><td>생명과학: 혈당 조절 · 지질 대사 · 화학: 지질과 콜레스테롤 구조 · 체육: 체질량지수와 건강 체력</td></tr>
-    <tr><td>진로 분야</td><td>임상병리사 · 의학 연구원 · 보건 데이터 분석가</td></tr>
-  </table>
-</section>
-
-<!-- 12 느낀 점 -->
-<section class="slide">
-  <div class="kicker">12 / 17 · 느끼고 배운 점</div>
-  <h2>AI를 활용하고 데이터를 분석하며 느끼고 배운 점</h2>
-  <ul class="facts small-facts">
-    <li>배소율: "이름이 유명한 모델이 우리 데이터에서도 가장 좋은 건 아니었다."</li>
-    <li>신동혁: "AI가 하는 일반적인 말보다 우리 데이터에서 나온 숫자를 믿어야 한다."</li>
-    <li>문가은: "'관계없다'와 '더 보태는 게 작다'는 완전히 다른 주장이었다."</li>
-  </ul>
-  <p class="point">AI 활용에서 배운 것: <b>계수 크기는 단위부터 확인</b> · <b>비교는 같은 분할에서</b></p>
-</section>
-
-<!-- 13~16 2부 · 모델 소개 (3분 발표) -->
-<section class="slide">
-  <div class="kicker">13 / 17 · 모델 소개 · 우리가 선택한 모델</div>
+  <div class="kicker">1 / 4 · 모델 소개 · 우리가 선택한 모델</div>
   <h2>우리가 선택한 모델: 선형 회귀</h2>
   <ul class="facts small-facts">
     <li>원리: 오차가 가장 작아지는 직선(입력 둘이면 평면)을 찾음</li>
@@ -288,7 +124,7 @@
 </section>
 
 <section class="slide">
-  <div class="kicker">14 / 17 · 모델 소개 · 비교 모델 1</div>
+  <div class="kicker">2 / 4 · 모델 소개 · 비교 모델 1</div>
   <h2>비교 모델 1: 랜덤 포레스트 회귀(300그루)</h2>
   <ul class="facts small-facts">
     <li>원리: 데이터를 조금씩 다르게 뽑아 만든 트리 여러 개의 예측을 평균</li>
@@ -300,7 +136,7 @@
 </section>
 
 <section class="slide">
-  <div class="kicker">15 / 17 · 모델 소개 · 비교 모델 2</div>
+  <div class="kicker">3 / 4 · 모델 소개 · 비교 모델 2</div>
   <h2>비교 모델 2: XGBoost 회귀(기본값)</h2>
   <ul class="facts small-facts">
     <li>원리: 작은 트리를 차례로 보탬, 다음 트리가 앞 트리의 오차를 줄임</li>
@@ -312,7 +148,7 @@
 </section>
 
 <section class="slide">
-  <div class="kicker">16 / 17 · 모델 소개 · 세 모델 비교 요약</div>
+  <div class="kicker">4 / 4 · 모델 소개 · 세 모델 비교 요약</div>
   <h2>세 모델 비교 요약</h2>
   <table class="mini cmp">
     <tr><th>모델</th><th>원리</th><th>장점</th><th>단점</th><th>적합한 상황</th><th>우리 데이터</th></tr>
@@ -322,14 +158,6 @@
   </table>
   <p class="small">우리 데이터 = 시험 MAE · 시험 R² (훈련 353명 · 시험 89명)</p>
   <p class="point">우리 데이터에는 <b>선형 회귀</b>: MAE 차이 <b>0.07점</b>, R² 최고, 계수 해석</p>
-</section>
-
-<!-- 17 마무리 -->
-<section class="slide chapter">
-  <div class="kicker">17 / 17 · 마무리</div>
-  <h1>감사합니다</h1>
-  <p class="sub">질문 받겠습니다</p>
-  <p class="small">검진표연구소 · 배소율 · 신동혁 · 문가은</p>
 </section>
 
 <div class="hint">← → 이동 · Home 처음으로</div>
